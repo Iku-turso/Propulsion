@@ -1,4 +1,4 @@
 obj/Debug/**
 bin/**
-*.suo
-*.suo
+**.suo
+Propulsion.v12.suo
