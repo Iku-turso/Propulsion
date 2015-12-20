@@ -57,6 +57,12 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Game\ThreeJsWorld.test.js" />
+    <Content Include="Game\ThreeJsWorld.js" />
+    <Content Include="Game\Game.js" />
+    <Content Include="Game\Ship.test.js" />
+    <Content Include="Game\Game.test.js" />
+    <Content Include="Game\Ship.js" />
     <Content Include="Index.html" />
     <Content Include="Scripts\three.js" />
     <Content Include="Scripts\three.min.js" />

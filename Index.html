@@ -1,9 +1,37 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <meta charset="utf-8">
+    <title>Propulsion</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            height: 100%;
+            width: 100%;
+        }
+
+    </style>
 </head>
 <body>
-    <script src="Scripts/Three.min.js"></script>
+<div class="web-gl-container"></div>
+<script src="Scripts/three.js"></script>
+<script src="Game/Game.js"></script>
+<script src="Game/Ship.js"></script>
+<script src="Game/ThreeJsWorld.js"></script>
+<script>
+    var game = new Game(new ShipFactory(), {
+        create: function() {
+            return new ThreeJsWorld(new ThreeJsSceneFactory(), new ThreeJsRendererFactory(), new ThreeJsCameraFactory());
+        }
+    });
+    game.init(document.body, window);
+
+    game.setCanvas();
+    window.addEventListener('resize', game.setCanvas, false);
+</script>
 </body>
 </html>
