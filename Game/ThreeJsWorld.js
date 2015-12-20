@@ -4,11 +4,10 @@
     var renderer;
     var camera;
 
-    self.init = function(container, width, height) {
+    self.init = function(container) {
         scene = sceneFactory.create();
-        renderer = rendererFactory.create(width, height);
-        var aspectRatio = width / height;
-        camera = cameraFactory.create(aspectRatio);
+        renderer = rendererFactory.create();
+        camera = cameraFactory.create();
 
         scene.add(camera);
         container.appendChild(renderer.domElement);

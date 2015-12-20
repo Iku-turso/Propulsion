@@ -1,20 +1,16 @@
 ﻿Game = function(shipFactory, worldFactory) {
     var self = this;
     var world;
-    var window;
 
-    self.init = function(container, _window_) {
-        window = _window_;
+    self.init = function(container) {
         world = worldFactory.create();
         world.init(container);
         var ship = shipFactory.create();
         world.add(ship);
-        self.setCanvas();
-        world.render();
     }
 
-    self.setCanvas = function() {
-        world.setCanvas(window.innerWidth, window.innerHeight);
+    self.setCanvas = function(width, height) {
+        world.setCanvas(width, height);
     }
 
     self.start = function() {

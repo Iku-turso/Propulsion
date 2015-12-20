@@ -28,10 +28,16 @@
             return new ThreeJsWorld(new ThreeJsSceneFactory(), new ThreeJsRendererFactory(), new ThreeJsCameraFactory());
         }
     });
-    game.init(document.body, window);
+    game.init(document.body);
 
-    game.setCanvas();
-    window.addEventListener('resize', game.setCanvas, false);
+    var setCanvas = function() {
+        game.setCanvas(window.innerWidth, window.innerHeight);
+    }
+    setCanvas();
+
+    window.addEventListener('resize', setCanvas, false);
+
+    game.start();
 </script>
 </body>
 </html>

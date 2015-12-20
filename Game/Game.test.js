@@ -21,10 +21,8 @@ describe('Game', function() {
 
     describe('when init is called with a container and window', function() {
         var container;
-        var window;
         beforeEach(function() {
             container = {};
-            window = { innerWidth: 1, innerHeight: 2 };
             game.init(container, window);
         });
 
@@ -44,19 +42,8 @@ describe('Game', function() {
             expect(worldSpy.add).toHaveBeenCalledWith(ship);
         });
 
-        it('should render world', function() {
-            expect(worldSpy.render).toHaveBeenCalled();
-        });
-
-        it('should call refreshCanvas with width 1 and height 2', function() {
-            expect(worldSpy.setCanvas).toHaveBeenCalledWith(1, 2);
-        });
-
-        it('refreshCanvas should call setCanvas with dimensions from window', function() {
-            window.innerWidth = 5;
-            window.innerHeight = 6;
-
-            game.setCanvas();
+        it('setCanvas should call world.setCanvas with given dimensions', function() {
+            game.setCanvas(5, 6);
 
             expect(worldSpy.setCanvas).toHaveBeenCalledWith(5, 6);
         });
