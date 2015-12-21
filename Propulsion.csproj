@@ -64,6 +64,8 @@
     <Content Include="Game\Game.test.js" />
     <Content Include="Game\Ship.js" />
     <Content Include="Index.html" />
+    <Content Include="Scripts\di4js.js" />
+    <Content Include="Scripts\di4js.min.js" />
     <Content Include="Scripts\three.js" />
     <Content Include="Scripts\three.min.js" />
     <Content Include="Web.config" />
@@ -72,6 +74,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\di4js.map" />
+    <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
