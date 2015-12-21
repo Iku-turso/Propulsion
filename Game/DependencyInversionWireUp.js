@@ -1,8 +1,8 @@
-﻿di.register('container')
-    .instance(document.body);
+﻿di.register('container').instance(document.body);
 
-di.register('window')
-    .instance(window);
+di.register('window').instance(window);
+
+di.register('wait').instance(requestAnimationFrame);
 
 di.register('threeJsCamera')
     .as(THREE.PerspectiveCamera)
@@ -31,7 +31,8 @@ di.register('world')
     .param().ref('threeJsRenderer')
     .param().ref('threeJsCamera')
     .param().ref('container')
-    .param().ref('window');
+    .param().ref('window')
+    .param().ref('wait');
 
 di.register('shipFactory')
     .as(ShipFactory)
@@ -44,4 +45,3 @@ di.register('game')
     .withConstructor()
     .param().ref('shipFactory')
     .param().ref('world');
-

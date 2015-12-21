@@ -17,6 +17,12 @@ describe('Ship', function() {
     it('should have y-coordinate 0', function() {
         expect(ship.y).toBe(0);
     });
+
+    it('should have y-coordinate 0.01 when accelerate is called', function() {
+        ship.accelerate();
+
+        expect(ship.y).toBe(0.01);
+    });
 });
 
 describe('ShipFactory', function() {

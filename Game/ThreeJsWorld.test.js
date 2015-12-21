@@ -7,6 +7,7 @@ describe('ThreeJsWorld', function() {
     var world;
     var container;
     var window;
+    var waitSpy;
 
     beforeEach(function() {
         sceneSpy = jasmine.createSpyObj('sceneSpy', ['add']);
@@ -19,7 +20,9 @@ describe('ThreeJsWorld', function() {
         container = jasmine.createSpyObj('containerSpy', ['appendChild']);
 
         window = {};
-        world = new ThreeJsWorld(sceneSpy, rendererSpy, cameraSpy, container, window);
+
+        waitSpy = jasmine.createSpy('waitSpy');
+        world = new ThreeJsWorld(sceneSpy, rendererSpy, cameraSpy, container, window, waitSpy);
     });
 
     it('should exist', function() {
@@ -27,7 +30,7 @@ describe('ThreeJsWorld', function() {
     });
 
     describe('when init is called', function() {
-        
+
         beforeEach(function() {
             world.init();
         });
@@ -62,12 +65,13 @@ describe('ThreeJsWorld', function() {
 
         describe('when add is called with a ship', function() {
             var mesh;
+            var ship;
             beforeEach(function() {
                 sceneSpy.add.and.callFake(function(m) {
                     mesh = m;
                 });
-                
-                var ship = {};
+
+                ship = {};
                 world.add(ship);
             });
 
@@ -100,6 +104,32 @@ describe('ThreeJsWorld', function() {
 
                 it('should call renderer with scene and camera', function() {
                     expect(rendererSpy.render).toHaveBeenCalledWith(sceneSpy, cameraSpy);
+                });
+            });
+
+            describe('when tick is called with a callback', function() {
+                var callback;
+                beforeEach(function() {
+                    ship.y = 123;
+                    rendererSpy.render.calls.reset();
+                    callback = jasmine.createSpy('tickCallback');
+                    world.tick(callback);
+                });
+
+                it('should wait', function() {
+                    expect(waitSpy).toHaveBeenCalled();
+                });
+
+                it('should call the callback', function() {
+                    expect(callback).toHaveBeenCalled();
+                });
+
+                it('should call renderer with scene and camera', function() {
+                    expect(rendererSpy.render).toHaveBeenCalledWith(sceneSpy, cameraSpy);
+                });
+
+                it('should update ship\'s mesh\'s y-coordinate when ship\'s y-coordinate changes', function() {
+                    expect(mesh.position).toEqual(jasmine.objectContaining({ x: 0, y: 123, z: 0 }));
                 });
             });
         });

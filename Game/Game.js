@@ -1,9 +1,10 @@
 ﻿Game = function(shipFactory, world) {
     var self = this;
+    var ship;
 
     self.init = function() {
         world.init();
-        var ship = shipFactory.create();
+        ship = shipFactory.create();
         world.add(ship);
     }
 
@@ -13,5 +14,8 @@
 
     self.start = function() {
         world.render();
+        world.tick(function() {
+            ship.accelerate();
+        });
     }
 }
