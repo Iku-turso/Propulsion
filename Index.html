@@ -17,22 +17,20 @@
     </style>
 </head>
 <body>
-<div class="web-gl-container"></div>
 <script src="Scripts/three.js"></script>
+<script src="Scripts/di4js.js"></script>
 <script src="Game/Game.js"></script>
 <script src="Game/Ship.js"></script>
 <script src="Game/ThreeJsWorld.js"></script>
+<script src="Game/DependencyInversionWireUp.js"></script>
 <script>
-    var game = new Game(new ShipFactory(), {
-        create: function() {
-            return new ThreeJsWorld(new ThreeJsSceneFactory(), new ThreeJsRendererFactory(), new ThreeJsCameraFactory());
-        }
-    });
+    var game = di.resolve('game');
+
     game.init(document.body);
 
     var setCanvas = function() {
         game.setCanvas(window.innerWidth, window.innerHeight);
-    }
+    };
     setCanvas();
 
     window.addEventListener('resize', setCanvas, false);

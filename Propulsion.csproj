@@ -57,6 +57,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Game\DependencyInversionWireUp.js" />
     <Content Include="Game\ThreeJsWorld.test.js" />
     <Content Include="Game\ThreeJsWorld.js" />
     <Content Include="Game\Game.js" />

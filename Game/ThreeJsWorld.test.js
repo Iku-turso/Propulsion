@@ -1,31 +1,20 @@
 ﻿/// <reference path="ThreeJsWorld.js" />
 /// <reference path="../Scripts/three.js" />
 describe('ThreeJsWorld', function() {
-    var sceneFactorySpy;
     var sceneSpy;
-    var rendererFactorySpy;
     var rendererSpy;
-    var cameraFactorySpy;
     var cameraSpy;
     var world;
     
-
     beforeEach(function() {
         sceneSpy = jasmine.createSpyObj('sceneSpy', ['add']);
 
-        sceneFactorySpy = jasmine.createSpyObj('sceneFactorySpy', ['create']);
-        sceneFactorySpy.create.and.returnValue(sceneSpy);
-
         rendererSpy = jasmine.createSpyObj('rendererSpy', ['render', 'setSize']);
         rendererSpy.domElement = {};
-        rendererFactorySpy = jasmine.createSpyObj('rendererFactorySpy', ['create']);
-        rendererFactorySpy.create.and.returnValue(rendererSpy);
 
         cameraSpy = jasmine.createSpyObj('cameraSpy', ['updateProjectionMatrix']);
-        cameraFactorySpy = jasmine.createSpyObj('cameraFactorySpy', ['create']);
-        cameraFactorySpy.create.and.returnValue(cameraSpy);
 
-        world = new ThreeJsWorld(sceneFactorySpy, rendererFactorySpy, cameraFactorySpy);
+        world = new ThreeJsWorld(sceneSpy, rendererSpy, cameraSpy);
     });
 
     it('should exist', function() {
@@ -38,18 +27,6 @@ describe('ThreeJsWorld', function() {
             container = jasmine.createSpyObj('containerSpy', ['appendChild']);
             var window = { innerWidth: 6, innerHeight: 2 };
             world.init(container, window);
-        });
-
-        it('should create a scene', function() {
-            expect(sceneFactorySpy.create).toHaveBeenCalled();
-        });
-
-        it('should create a renderer', function() {
-            expect(rendererFactorySpy.create).toHaveBeenCalled();
-        });
-
-        it('should create a camera with aspect-ratio 1', function() {
-            expect(cameraFactorySpy.create).toHaveBeenCalled();
         });
 
         it('should add the camera to the scene', function() {
@@ -119,82 +96,6 @@ describe('ThreeJsWorld', function() {
                 it('should call renderer with scene and camera', function() {
                     expect(rendererSpy.render).toHaveBeenCalledWith(sceneSpy, cameraSpy);
                 });
-            });
-        });
-    });
-});
-
-describe('ThreeJsSceneFactory', function() {
-    it('should exist', function() {
-        expect(ThreeJsSceneFactory).toBeDefined();
-    });
-
-    it('should create threeJs scene', function() {
-        var factory = new ThreeJsSceneFactory();
-        var scene = factory.create();
-
-        expect(scene).toEqual(jasmine.any(THREE.Scene));
-    });
-});
-
-describe('ThreeJsRendererFactory', function() {
-    it('should exist', function() {
-        expect(ThreeJsRendererFactory).toBeDefined();
-    });
-
-    // Todo: Supposedly PhantomJs has problems with this?
-    xit('should create a threeJs renderer', function() {
-        var factory = new ThreeJsRendererFactory();
-        var renderer = factory.create();
-
-        expect(renderer).toEqual(jasmine.any(THREE.WebGLRenderer));
-    });
-});
-
-describe('ThreeJsCameraFactory', function() {
-    it('should exist', function() {
-        expect(ThreeJsCameraFactory).toBeDefined();
-    });
-
-    describe('when create is called with aspectRatio 2', function() {
-        var camera;
-
-        beforeEach(function() {
-            var factory = new ThreeJsCameraFactory();
-            camera = factory.create();
-        });
-
-        describe('the created camera', function() {
-            it('should be a threeJs perspectiveCamera', function() {
-                expect(camera).toEqual(jasmine.any(THREE.PerspectiveCamera));
-            });
-
-            it('should be in coordinate x = 0', function() {
-                expect(camera.position.x).toBe(0);
-            });
-
-            it('should be in coordinate y = 0', function() {
-                expect(camera.position.y).toBe(0);
-            });
-
-            it('should be lifted 10 units over ground-level', function() {
-                expect(camera.position.z).toBe(10);
-            });
-
-            it('should have FOV of 45 degrees', function() {
-                expect(camera.fov).toBe(45);
-            });
-
-            it('should have far-drawing distance of 10000 units', function() {
-                expect(camera.far).toBe(10000);
-            });
-
-            it('should have near-drawing distance of 0.1 units', function() {
-                expect(camera.near).toBe(0.1);
-            });
-
-            it('should have aspect-ratio of 1', function() {
-                expect(camera.aspect).toBe(1);
             });
         });
     });

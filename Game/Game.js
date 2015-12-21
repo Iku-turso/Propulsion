@@ -1,9 +1,7 @@
-﻿Game = function(shipFactory, worldFactory) {
+﻿Game = function(shipFactory, world) {
     var self = this;
-    var world;
 
     self.init = function(container) {
-        world = worldFactory.create();
         world.init(container);
         var ship = shipFactory.create();
         world.add(ship);

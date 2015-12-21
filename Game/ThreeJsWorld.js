@@ -1,14 +1,7 @@
-﻿ThreeJsWorld = function(sceneFactory, rendererFactory, cameraFactory) {
+﻿ThreeJsWorld = function(scene, renderer, camera) {
     var self = this;
-    var scene;
-    var renderer;
-    var camera;
 
     self.init = function(container) {
-        scene = sceneFactory.create();
-        renderer = rendererFactory.create();
-        camera = cameraFactory.create();
-
         scene.add(camera);
         container.appendChild(renderer.domElement);
     };
@@ -28,32 +21,5 @@
         camera.aspect = width / heigth;
         camera.updateProjectionMatrix();
         renderer.setSize(width, heigth);
-    }
-}
-
-ThreeJsSceneFactory = function() {
-    var self = this;
-
-    self.create = function() {
-        return new THREE.Scene();
-    }
-}
-
-ThreeJsRendererFactory = function() {
-    var self = this;
-
-    self.create = function() {
-        var renderer = new THREE.WebGLRenderer();
-        return renderer;
-    }
-}
-
-ThreeJsCameraFactory = function() {
-    var self = this;
-
-    self.create = function() {
-        var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 10000);
-        camera.position.z = 10;
-        return camera;
     }
 }

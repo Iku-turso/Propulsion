@@ -3,7 +3,6 @@
 describe('Game', function() {
     var shipFactorySpy;
     var ship;
-    var worldFactorySpy;
     var worldSpy;
     var game;
 
@@ -13,10 +12,8 @@ describe('Game', function() {
         shipFactorySpy.create.and.returnValue(ship);
 
         worldSpy = jasmine.createSpyObj('worldSpy', ['add', 'init', 'render', 'setCanvas']);
-        worldFactorySpy = jasmine.createSpyObj('worldFactorySpy', ['create']);
-        worldFactorySpy.create.and.returnValue(worldSpy);
 
-        game = new Game(shipFactorySpy, worldFactorySpy);
+        game = new Game(shipFactorySpy, worldSpy);
     });
 
     describe('when init is called with a container and window', function() {
@@ -28,10 +25,6 @@ describe('Game', function() {
 
         it('should create a ship', function() {
             expect(shipFactorySpy.create).toHaveBeenCalled();
-        });
-
-        it('should create a world', function() {
-            expect(worldFactorySpy.create).toHaveBeenCalled();
         });
 
         it('should init the world with container', function() {
