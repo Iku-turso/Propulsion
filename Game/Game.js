@@ -1,14 +1,14 @@
 ﻿Game = function(shipFactory, world) {
     var self = this;
 
-    self.init = function(container) {
-        world.init(container);
+    self.init = function() {
+        world.init();
         var ship = shipFactory.create();
         world.add(ship);
     }
 
-    self.setCanvas = function(width, height) {
-        world.setCanvas(width, height);
+    self.setCanvas = function() {
+        world.setCanvas();
     }
 
     self.start = function() {

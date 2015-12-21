@@ -26,10 +26,10 @@
 <script>
     var game = di.resolve('game');
 
-    game.init(document.body);
+    game.init();
 
     var setCanvas = function() {
-        game.setCanvas(window.innerWidth, window.innerHeight);
+        game.setCanvas();
     };
     setCanvas();
 

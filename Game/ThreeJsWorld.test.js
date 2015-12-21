@@ -5,7 +5,9 @@ describe('ThreeJsWorld', function() {
     var rendererSpy;
     var cameraSpy;
     var world;
-    
+    var container;
+    var window;
+
     beforeEach(function() {
         sceneSpy = jasmine.createSpyObj('sceneSpy', ['add']);
 
@@ -14,19 +16,20 @@ describe('ThreeJsWorld', function() {
 
         cameraSpy = jasmine.createSpyObj('cameraSpy', ['updateProjectionMatrix']);
 
-        world = new ThreeJsWorld(sceneSpy, rendererSpy, cameraSpy);
+        container = jasmine.createSpyObj('containerSpy', ['appendChild']);
+
+        window = {};
+        world = new ThreeJsWorld(sceneSpy, rendererSpy, cameraSpy, container, window);
     });
 
     it('should exist', function() {
         expect(ThreeJsWorld).toBeDefined();
     });
 
-    describe('when init is called with a container', function() {
-        var container;
+    describe('when init is called', function() {
+        
         beforeEach(function() {
-            container = jasmine.createSpyObj('containerSpy', ['appendChild']);
-            var window = { innerWidth: 6, innerHeight: 2 };
-            world.init(container, window);
+            world.init();
         });
 
         it('should add the camera to the scene', function() {
@@ -37,9 +40,11 @@ describe('ThreeJsWorld', function() {
             expect(container.appendChild).toHaveBeenCalledWith(rendererSpy.domElement);
         });
 
-        describe('when setCanvas is called with width 2 and height 4', function() {
+        describe('when window dimensions are 4 and 2 and when setCanvas is called', function() {
             beforeEach(function() {
-                world.setCanvas(4, 2);
+                window.innerWidth = 4;
+                window.innerHeight = 2;
+                world.setCanvas();
             });
 
             it('should set size of renderer to 4 and 2', function() {

@@ -1,7 +1,7 @@
-﻿ThreeJsWorld = function(scene, renderer, camera) {
+﻿ThreeJsWorld = function(scene, renderer, camera, container, window) {
     var self = this;
 
-    self.init = function(container) {
+    self.init = function() {
         scene.add(camera);
         container.appendChild(renderer.domElement);
     };
@@ -17,9 +17,11 @@
         renderer.render(scene, camera);
     }
 
-    self.setCanvas = function(width, heigth) {
-        camera.aspect = width / heigth;
+    self.setCanvas = function() {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        camera.aspect = width / height;
         camera.updateProjectionMatrix();
-        renderer.setSize(width, heigth);
+        renderer.setSize(width, height);
     }
 }

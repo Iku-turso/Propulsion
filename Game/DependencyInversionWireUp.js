@@ -1,4 +1,10 @@
-﻿di.register('threeJsCamera')
+﻿di.register('container')
+    .instance(document.body);
+
+di.register('window')
+    .instance(window);
+
+di.register('threeJsCamera')
     .as(THREE.PerspectiveCamera)
     .asSingleton()
     .setFactory(function() {
@@ -23,7 +29,9 @@ di.register('world')
     .withConstructor()
     .param().ref('threeJsScene')
     .param().ref('threeJsRenderer')
-    .param().ref('threeJsCamera');
+    .param().ref('threeJsCamera')
+    .param().ref('container')
+    .param().ref('window');
 
 di.register('shipFactory')
     .as(ShipFactory)
@@ -36,3 +44,4 @@ di.register('game')
     .withConstructor()
     .param().ref('shipFactory')
     .param().ref('world');
+

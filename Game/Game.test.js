@@ -16,29 +16,27 @@ describe('Game', function() {
         game = new Game(shipFactorySpy, worldSpy);
     });
 
-    describe('when init is called with a container and window', function() {
-        var container;
+    describe('when init is called', function() {
         beforeEach(function() {
-            container = {};
-            game.init(container, window);
+            game.init();
         });
 
         it('should create a ship', function() {
             expect(shipFactorySpy.create).toHaveBeenCalled();
         });
 
-        it('should init the world with container', function() {
-            expect(worldSpy.init).toHaveBeenCalledWith(container);
+        it('should init the world', function() {
+            expect(worldSpy.init).toHaveBeenCalled();
         });
 
         it('should add the ship from shipFactory to world', function() {
             expect(worldSpy.add).toHaveBeenCalledWith(ship);
         });
 
-        it('setCanvas should call world.setCanvas with given dimensions', function() {
-            game.setCanvas(5, 6);
+        it('setCanvas should call world.setCanvas', function() {
+            game.setCanvas();
 
-            expect(worldSpy.setCanvas).toHaveBeenCalledWith(5, 6);
+            expect(worldSpy.setCanvas).toHaveBeenCalled();
         });
 
         describe('when game is started', function() {
