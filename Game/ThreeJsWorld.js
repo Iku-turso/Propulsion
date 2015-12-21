@@ -11,7 +11,13 @@
     self.add = function(_ship_) {
         ship = _ship_;
         var geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        for (var i = 0; i < geometry.faces.length; i += 2) {
+            var hex = Math.random() * 0xffffff;
+            geometry.faces[i].color.setHex(hex);
+            geometry.faces[i + 1].color.setHex(hex);
+        }
+        var material = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+
         shipMesh = new THREE.Mesh(geometry, material);
         scene.add(shipMesh);
     };

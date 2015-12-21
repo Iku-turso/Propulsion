@@ -91,10 +91,6 @@ describe('ThreeJsWorld', function() {
                 it('should be made of basic material', function() {
                     expect(mesh.material).toEqual(jasmine.any(THREE.MeshBasicMaterial));
                 });
-
-                it('should be white', function() {
-                    expect(mesh.material.color).toEqual(jasmine.objectContaining({ r: 1, g: 1, b: 1 }));
-                });
             });
 
             describe('when render is called', function() {
