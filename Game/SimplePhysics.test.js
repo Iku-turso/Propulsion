@@ -65,4 +65,25 @@ describe('SimplePhysics when ship is added', function() {
             });
         });
     });
+
+    describe('when applyAngularForce is called with PI for a ship pointing right', function() {
+        beforeEach(function() {
+            ship.direction = 0;
+            physics.applyAngularForce(ship, Math.PI * 1000);
+        });
+
+        it('should set ship\'s angularVelocity to PI', function() {
+            expect(ship.angularVelocity).toBe(Math.PI);
+        });
+
+        describe('when physics are applied', function() {
+            beforeEach(function() {
+                physics.apply();
+            });
+
+            it('ship should point left', function() {
+                expect(ship.direction).toBe(Math.PI);
+            });
+        });
+    });
 });

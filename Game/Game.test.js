@@ -9,7 +9,7 @@ describe('Game', function() {
     var tickCallback;
 
     beforeEach(function() {
-        shipSpy = jasmine.createSpyObj('shipSpy', ['accelerate', 'burn']);
+        shipSpy = jasmine.createSpyObj('shipSpy', ['accelerate', 'burn', 'steerLeft', 'steerRight']);
         shipFactorySpy = jasmine.createSpyObj('shipFactorySpy', ['create']);
         shipFactorySpy.create.and.returnValue(shipSpy);
 
@@ -67,6 +67,49 @@ describe('Game', function() {
 
                 expect(shipSpy.burn).not.toHaveBeenCalled();
             });
+
+            it('should not steer left when leftStart is called', function() {
+                game.leftStart();
+
+                expect(shipSpy.steerLeft).not.toHaveBeenCalled();
+            });
+
+            it('should steer left when leftStart is called and tickCallback is called', function() {
+                game.leftStart();
+                tickCallback();
+
+                expect(shipSpy.steerLeft).toHaveBeenCalled();
+            });
+
+            it('should not steer left when left is called and leftEnd is called and tickCallback is called', function() {
+                game.leftStart();
+                game.leftEnd();
+                tickCallback();
+
+                expect(shipSpy.steerLeft).not.toHaveBeenCalled();
+            });
+
+            it('should not steer right when rightStart is called', function() {
+                game.rightStart();
+
+                expect(shipSpy.steerRight).not.toHaveBeenCalled();
+            });
+
+            it('should steer right when rightStart is called and tickCallback is called', function() {
+                game.rightStart();
+                tickCallback();
+
+                expect(shipSpy.steerRight).toHaveBeenCalled();
+            });
+
+            it('should not steer right when right is called and rightEnd is called and tickCallback is called', function() {
+                game.rightStart();
+                game.rightEnd();
+                tickCallback();
+
+                expect(shipSpy.steerRight).not.toHaveBeenCalled();
+            });
+
 
             describe('when tickCallback is called', function() {
                 beforeEach(function() {

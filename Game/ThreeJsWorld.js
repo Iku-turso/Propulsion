@@ -34,7 +34,9 @@
     var animate = function() {
         // Todo: find out the correct order of this stuff.
         tickCallback();
+        shipMesh.position.x = ship.x;
         shipMesh.position.y = ship.y;
+        shipMesh.rotation.z = ship.direction;
         wait(animate);
         renderer.render(scene, camera);
     };

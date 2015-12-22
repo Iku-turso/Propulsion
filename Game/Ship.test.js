@@ -5,7 +5,7 @@ describe('Ship', function() {
     var physicsSpy;
 
     beforeEach(function() {
-        physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForce']);
+        physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForce', 'applyAngularForce']);
         ship = new Ship(physicsSpy);
     });
 
@@ -37,18 +37,30 @@ describe('Ship', function() {
         expect(ship.mass).toBe(1000);
     });
 
-    it('should apply an upward force to ship when the ship\'s direction is up and when burning', function() {
+    it('should apply an upward force to ship when the ship\'s direction is up when burning', function() {
         ship.direction = Math.PI / 2;
         ship.burn();
 
         expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ x: 0, y: 1 }));
     });
 
-    it('should apply a leftward force to ship when the ship\'s direction is left and when burning', function() {
+    it('should apply a leftward force to ship when the ship\'s direction is left when burning', function() {
         ship.direction = Math.PI;
         ship.burn();
 
         expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ x: -1, y: 0 }));
+    });
+
+    it('should apply a counter-clockwise angular force when steering left', function() {
+        ship.steerLeft();
+
+        expect(physicsSpy.applyAngularForce).toHaveBeenCalledWith(ship, 1);
+    });
+
+    it('should apply a clockwise angular force when steering right', function() {
+        ship.steerRight();
+
+        expect(physicsSpy.applyAngularForce).toHaveBeenCalledWith(ship, -1);
     });
 });
 

@@ -97,6 +97,8 @@ describe('ThreeJsWorld', function() {
                 var callback;
                 beforeEach(function() {
                     ship.y = 123;
+                    ship.x = 222;
+                    ship.direction = 333;
                     rendererSpy.render.calls.reset();
                     callback = jasmine.createSpy('tickCallback');
                     world.tick(callback);
@@ -114,8 +116,12 @@ describe('ThreeJsWorld', function() {
                     expect(rendererSpy.render).toHaveBeenCalledWith(sceneSpy, cameraSpy);
                 });
 
-                it('should update ship\'s mesh\'s y-coordinate when ship\'s y-coordinate changes', function() {
-                    expect(mesh.position).toEqual(jasmine.objectContaining({ x: 0, y: 123, z: 0 }));
+                it('should update ship\'s mesh\'s coordinates to ship\'s coordinates', function() {
+                    expect(mesh.position).toEqual(jasmine.objectContaining({ x: 222, y: 123 }));
+                });
+
+                it('should update ship\'s mesh\'s direction to ship\'s direction', function() {
+                    expect(mesh.rotation.z).toEqual(333);
                 });
             });
         });

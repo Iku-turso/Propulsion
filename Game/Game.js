@@ -20,10 +20,36 @@
         shouldBurn = false;
     }
 
+    var shouldSteerLeft = false;
+    self.leftStart = function() {
+        shouldSteerLeft = true;
+    }
+
+    self.leftEnd = function() {
+        shouldSteerLeft = false;
+    }
+
+    var shouldSteerRight = false;
+    self.rightStart = function() {
+        shouldSteerRight = true;
+    }
+
+    self.rightEnd = function() {
+        shouldSteerRight = false;
+    }
+
     self.start = function() {
         world.tick(function() {
             if (shouldBurn) {
                 ship.burn();
+            }
+
+            if (shouldSteerLeft) {
+                ship.steerLeft();
+            }
+
+            if (shouldSteerRight) {
+                ship.steerRight();
             }
 
             physics.applyForce(ship, { x: 0, y: -0.1 });

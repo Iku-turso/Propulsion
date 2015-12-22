@@ -17,6 +17,14 @@
         };
         physics.applyForce(self, burnVector);
     }
+
+    self.steerLeft = function() {
+        physics.applyAngularForce(self, 1);
+    }
+
+    self.steerRight = function() {
+        physics.applyAngularForce(self, -1);
+    }
 };
 
 ShipFactory = function(world, physics, locate) {

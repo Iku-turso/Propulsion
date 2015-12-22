@@ -40,11 +40,23 @@
         if (event.keyCode === 38) {
             game.upStart();
         }
+        if (event.keyCode === 37) {
+            game.leftStart();
+        }
+        if (event.keyCode === 39) {
+            game.rightStart();
+        }
     });
 
     window.addEventListener('keyup', function(event) {
         if (event.keyCode === 38) {
             game.upEnd();
+        }
+        if (event.keyCode === 37) {
+            game.leftEnd();
+        }
+        if (event.keyCode === 39) {
+            game.rightEnd();
         }
     });
 
