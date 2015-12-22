@@ -37,28 +37,6 @@ describe('Ship', function() {
         expect(ship.mass).toBe(1000);
     });
 
-    it('should have y-coordinate 0.01 when accelerate is called', function() {
-        ship.accelerate();
-
-        expect(ship.y).toBe(0.01);
-    });
-
-    it('should not be accelerating', function() {
-        expect(ship.isAccelerating()).toBe(false);
-    });
-
-    it('should be accelerating when startAccelerate is called', function() {
-        ship.startAccelerate();
-
-        expect(ship.isAccelerating()).toBe(true);
-    });
-
-    it('should not be accelerating when stopAccelerate is called', function() {
-        ship.stopAccelerate();
-
-        expect(ship.isAccelerating()).toBe(false);
-    });
-
     it('should apply an upward force to ship when the ship\'s direction is up and when burning', function() {
         ship.direction = Math.PI / 2;
         ship.burn();

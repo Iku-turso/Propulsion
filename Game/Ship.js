@@ -8,23 +8,6 @@
     self.angularVelocity = 0;
     self.mass = 1000;
 
-    var _isAccelerating = false;
-    self.isAccelerating = function() {
-        return _isAccelerating;
-    };
-
-    self.startAccelerate = function() {
-        _isAccelerating = true;
-    }
-
-    self.stopAccelerate = function() {
-        _isAccelerating = false;
-    }
-
-    self.accelerate = function() {
-        self.y += 0.01;
-    }
-
     self.burn = function() {
         var force = 1;
         var resolution = 1000;
