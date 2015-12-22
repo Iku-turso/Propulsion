@@ -7,9 +7,11 @@ describe('Game', function() {
     var physicsSpy;
     var game;
     var tickCallback;
+    var gameObjectASpy;
+    var gameObjectBSpy;
 
     beforeEach(function() {
-        shipSpy = jasmine.createSpyObj('shipSpy', ['accelerate', 'burn', 'steerLeft', 'steerRight']);
+        shipSpy = jasmine.createSpyObj('shipSpy', ['accelerate', 'burn', 'steerLeft', 'steerRight', 'shoot']);
         shipFactorySpy = jasmine.createSpyObj('shipFactorySpy', ['create']);
         shipFactorySpy.create.and.returnValue(shipSpy);
 
@@ -20,7 +22,11 @@ describe('Game', function() {
 
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['apply', 'applyForce']);
 
-        game = new Game(shipFactorySpy, worldSpy, physicsSpy);
+        gameObjectASpy = jasmine.createSpyObj('gameObjectASpy', ['live']);
+        gameObjectBSpy = jasmine.createSpyObj('gameObjectBSpy', ['live']);
+        var gameObjects = [gameObjectASpy, gameObjectBSpy];
+
+        game = new Game(shipFactorySpy, worldSpy, physicsSpy, gameObjects);
     });
 
     describe('when init is called', function() {
@@ -110,6 +116,11 @@ describe('Game', function() {
                 expect(shipSpy.steerRight).not.toHaveBeenCalled();
             });
 
+            it('ship should shoot when game shoots', function() {
+                game.shoot();
+
+                expect(shipSpy.shoot).toHaveBeenCalled();
+            });
 
             describe('when tickCallback is called', function() {
                 beforeEach(function() {
@@ -126,6 +137,11 @@ describe('Game', function() {
 
                 it('should apply physics', function() {
                     expect(physicsSpy.apply).toHaveBeenCalled();
+                });
+
+                it('should call live on all gameObjects', function() {
+                    expect(gameObjectASpy.live).toHaveBeenCalled();
+                    expect(gameObjectBSpy.live).toHaveBeenCalled();
                 });
             });
         });

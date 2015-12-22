@@ -1,5 +1,6 @@
 ﻿/// <reference path="SimplePhysics.js" />
 /// <reference path="Ship.js" />
+/// <reference path="Missile.js" />
 describe('SimplePhysics when ship is added', function() {
     var physics;
     var ship;
@@ -83,6 +84,40 @@ describe('SimplePhysics when ship is added', function() {
 
             it('ship should point left', function() {
                 expect(ship.direction).toBe(Math.PI);
+            });
+        });
+    });
+
+    describe('when two objects are added to physics', function() {
+        var objectA;
+        var objectB;
+        beforeEach(function() {
+            objectA = { x: 0, y: 0, xVelocity: 0, yVelocity: 0, direction: 0, angularVelocity: 0, mass: 1 };
+            objectB = { x: 0, y: 0, xVelocity: 0, yVelocity: 0, direction: 0, angularVelocity: 0, mass: 1 };
+            physics.add(objectA);
+            physics.add(objectB);
+        });
+
+        describe('when different force is applied to both objects', function() {
+            beforeEach(function() {
+                physics.applyForce(objectA, { x: -1, y: 0 });
+                physics.applyForce(objectB, { x: 1, y: 0 });
+            });
+
+            it('both objects should have xVelocity matching to force', function() {
+                expect(objectA.xVelocity).toBe(-1);
+                expect(objectB.xVelocity).toBe(1);
+            });
+
+            describe('when physics are applied', function() {
+                beforeEach(function() {
+                    physics.apply();
+                });
+
+                it('both objects should move to directions matching to velocity', function() {
+                    expect(objectA.x).toBe(-1);
+                    expect(objectB.x).toBe(1);
+                });
             });
         });
     });

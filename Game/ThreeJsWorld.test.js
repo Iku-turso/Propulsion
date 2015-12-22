@@ -10,7 +10,7 @@ describe('ThreeJsWorld', function() {
     var waitSpy;
 
     beforeEach(function() {
-        sceneSpy = jasmine.createSpyObj('sceneSpy', ['add']);
+        sceneSpy = jasmine.createSpyObj('sceneSpy', ['add', 'addedMissile']);
 
         rendererSpy = jasmine.createSpyObj('rendererSpy', ['render', 'setSize']);
         rendererSpy.domElement = {};
@@ -60,6 +60,26 @@ describe('ThreeJsWorld', function() {
 
             it('should update camera\'s projection matrix', function() {
                 expect(cameraSpy.updateProjectionMatrix).toHaveBeenCalled();
+            });
+        });
+
+        describe('when addMissile is called with a missile', function() {
+            var missile;
+            var addedMesh;
+            beforeEach(function() {
+                sceneSpy.add.and.callFake(function(m) {
+                    addedMesh = m;
+                });
+                missile = { x: 1, y: 2, direction: 3 };
+                world.addMissile(missile);
+            });
+
+            it('should add a mesh with missile\'s coordinates', function() {
+                expect(addedMesh.position).toEqual(jasmine.objectContaining({ x: 1, y: 2 }));
+            });
+
+            it('should add a mesh with missile\'s direction', function() {
+                expect(addedMesh.rotation.z).toBe(3);
             });
         });
 

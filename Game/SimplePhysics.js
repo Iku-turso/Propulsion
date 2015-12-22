@@ -1,23 +1,25 @@
 ﻿SimplePhysics = function() {
     var self = this;
 
-    self.applyForce = function(ship, vector) {
-        ship.xVelocity += vector.x / ship.mass;
-        ship.yVelocity += vector.y / ship.mass;
-    }
+    self.applyForce = function(object, vector) {
+        object.xVelocity += vector.x / object.mass;
+        object.yVelocity += vector.y / object.mass;
+    };
 
-    self.applyAngularForce = function(ship, force) {
-        ship.angularVelocity += force / ship.mass;
-    }
+    self.applyAngularForce = function(object, force) {
+        object.angularVelocity += force / object.mass;
+    };
 
-    var ship;
-    self.add = function(_ship) {
-        ship = _ship;
-    }
+    var physicalObjects = [];
+    self.add = function(object) {
+        physicalObjects.push(object);
+    };
 
     self.apply = function() {
-        ship.x += ship.xVelocity;
-        ship.y += ship.yVelocity;
-        ship.direction += ship.angularVelocity;
-    }
+        physicalObjects.forEach(function(object) {
+            object.x += object.xVelocity;
+            object.y += object.yVelocity;
+            object.direction += object.angularVelocity;
+        });
+    };
 }

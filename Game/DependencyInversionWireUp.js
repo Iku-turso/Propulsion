@@ -6,6 +6,8 @@ di.register('window').instance(window);
 
 di.register('wait').instance(requestAnimationFrame);
 
+di.register('gameObjects').instance([]);
+
 di.register('physics')
     .as(SimplePhysics)
     .asSingleton();
@@ -41,10 +43,25 @@ di.register('world')
     .param().ref('window')
     .param().ref('wait');
 
+di.register('missile')
+    .as(Missile)
+    .withConstructor()
+    .param().ref('physics');
+
+di.register('missileFactory')
+    .as(MissileFactory)
+    .asSingleton()
+    .withConstructor()
+    .param().ref('world')
+    .param().ref('physics')
+    .param().ref('locate')
+    .param().ref('gameObjects');
+
 di.register('ship')
     .as(Ship)
     .withConstructor()
-    .param().ref('physics');
+    .param().ref('physics')
+    .param().ref('missileFactory');
 
 di.register('shipFactory')
     .as(ShipFactory)
@@ -52,7 +69,8 @@ di.register('shipFactory')
     .withConstructor()
     .param().ref('world')
     .param().ref('physics')
-    .param().ref('locate');
+    .param().ref('locate')
+    .param().ref('gameObjects');
 
 di.register('game')
     .as(Game)
@@ -60,4 +78,5 @@ di.register('game')
     .withConstructor()
     .param().ref('shipFactory')
     .param().ref('world')
-    .param().ref('physics');
+    .param().ref('physics')
+    .param().ref('gameObjects');

@@ -3,10 +3,12 @@
 describe('Ship', function() {
     var ship;
     var physicsSpy;
+    var missileFactorySpy;
 
     beforeEach(function() {
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForce', 'applyAngularForce']);
-        ship = new Ship(physicsSpy);
+        missileFactorySpy = jasmine.createSpyObj('missileFactorySpy', ['create']);
+        ship = new Ship(physicsSpy, missileFactorySpy);
     });
 
     it('should have x-coordinate 0', function() {
@@ -37,6 +39,10 @@ describe('Ship', function() {
         expect(ship.mass).toBe(1000);
     });
 
+    it('should know how to live', function() {
+        expect(ship.live).toEqual(jasmine.any(Function));
+    });
+
     it('should apply an upward force to ship when the ship\'s direction is up when burning', function() {
         ship.direction = Math.PI / 2;
         ship.burn();
@@ -62,6 +68,16 @@ describe('Ship', function() {
 
         expect(physicsSpy.applyAngularForce).toHaveBeenCalledWith(ship, -1);
     });
+
+    it('should create a missile for ship when shooting', function() {
+        ship.shoot();
+
+        expect(missileFactorySpy.create).toHaveBeenCalledWith(ship);
+    });
+
+    it('should have id', function() {
+        expect(ship.id).toEqual(jasmine.any(Number));
+    });
 });
 
 describe('ShipFactory when ship is created', function() {
@@ -70,18 +86,20 @@ describe('ShipFactory when ship is created', function() {
     var worldSpy;
     var physicsSpy;
     var locateSpy;
+    var gameObjects;
     beforeEach(function() {
         worldSpy = jasmine.createSpyObj('worldSpy', ['add']);
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['add']);
         locateSpy = jasmine.createSpy('locateSpy').and.returnValue(new Ship());
-        factory = new ShipFactory(worldSpy, physicsSpy, locateSpy);
+        gameObjects = [];
+        factory = new ShipFactory(worldSpy, physicsSpy, locateSpy, gameObjects);
         ship = factory.create();
     });
 
     it('should create ship using serviceLocator', function() {
         expect(locateSpy).toHaveBeenCalledWith('ship');
     });
-    
+
     it('created ship should be a Ship', function() {
         expect(ship).toEqual(jasmine.any(Ship));
     });
@@ -92,5 +110,9 @@ describe('ShipFactory when ship is created', function() {
 
     it('should add the ship to physics', function() {
         expect(physicsSpy.add).toHaveBeenCalledWith(ship);
+    });
+
+    it('should push ship to gameObjects', function() {
+        expect(gameObjects).toEqual([ship]);
     });
 });

@@ -1,4 +1,4 @@
-﻿Game = function(shipFactory, world, physics) {
+﻿Game = function(shipFactory, world, physics, gameObjects) {
     var self = this;
     var ship;
 
@@ -38,6 +38,10 @@
         shouldSteerRight = false;
     }
 
+    self.shoot = function() {
+        ship.shoot();
+    }
+
     self.start = function() {
         world.tick(function() {
             if (shouldBurn) {
@@ -51,6 +55,11 @@
             if (shouldSteerRight) {
                 ship.steerRight();
             }
+
+            // Todo: should gameObjects be an array or a class?
+            gameObjects.forEach(function(go) {
+                go.live();
+            });
 
             physics.applyForce(ship, { x: 0, y: -0.1 });
 

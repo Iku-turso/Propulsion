@@ -1,4 +1,4 @@
-﻿Ship = function(physics) {
+﻿Ship = function(physics, missileFactory, gameObjects) {
     var self = this;
     self.x = 0;
     self.y = 0;
@@ -7,6 +7,14 @@
     self.direction = Math.PI / 2;
     self.angularVelocity = 0;
     self.mass = 1000;
+    self.id = Math.random();
+    self.live = function() {
+        
+    }
+
+    self.shoot = function() {
+        missileFactory.create(self);
+    };
 
     self.burn = function() {
         var force = 1;
@@ -27,12 +35,13 @@
     }
 };
 
-ShipFactory = function(world, physics, locate) {
+ShipFactory = function(world, physics, locate, gameObjects) {
     var self = this;
     self.create = function() {
         var ship = locate('ship');
         world.add(ship);
         physics.add(ship);
+        gameObjects.push(ship);
         return ship;
     }
 };

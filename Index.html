@@ -22,6 +22,7 @@
 <script src="Game/Game.js"></script>
 <script src="Game/Ship.js"></script>
 <script src="Game/ThreeJsWorld.js"></script>
+<script src="Game/Missile.js"></script>
 <script src="Game/SimplePhysics.js"></script>
 <script src="Game/DependencyInversionWireUp.js"></script>
 <script>
@@ -45,6 +46,9 @@
         }
         if (event.keyCode === 39) {
             game.rightStart();
+        }
+        if (event.keyCode === 32) {
+            game.shoot();
         }
     });
 
