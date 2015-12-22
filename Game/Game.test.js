@@ -18,7 +18,7 @@ describe('Game', function() {
             tickCallback = callback;
         });
 
-        physicsSpy = jasmine.createSpyObj('physicsSpy', ['apply']);
+        physicsSpy = jasmine.createSpyObj('physicsSpy', ['apply', 'applyForce']);
 
         game = new Game(shipFactorySpy, worldSpy, physicsSpy);
     });
@@ -47,13 +47,38 @@ describe('Game', function() {
                 game.start();
             });
 
+            it('should not burn when upStart is called', function() {
+                game.upStart();
+
+                expect(shipSpy.burn).not.toHaveBeenCalled();
+            });
+
+            it('should burn when upStart is called and tickCallback is called', function() {
+                game.upStart();
+                tickCallback();
+
+                expect(shipSpy.burn).toHaveBeenCalled();
+            });
+
+            it('should not burn when up is called and upEnd is called and tickCallback is called', function() {
+                game.upStart();
+                game.upEnd();
+                tickCallback();
+
+                expect(shipSpy.burn).not.toHaveBeenCalled();
+            });
+
             describe('when tickCallback is called', function() {
                 beforeEach(function() {
                     tickCallback();
                 });
 
-                it('should have the ship burn', function() {
-                    expect(shipSpy.burn).toHaveBeenCalled();
+                it('should apply gravity to ship', function() {
+                    expect(physicsSpy.applyForce).toHaveBeenCalledWith(shipSpy, jasmine.objectContaining({ x: 0, y: -0.1 }));
+                });
+
+                it('should not burn', function() {
+                    expect(shipSpy.burn).not.toHaveBeenCalled();
                 });
 
                 it('should apply physics', function() {

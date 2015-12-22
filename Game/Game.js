@@ -11,9 +11,23 @@
         world.setCanvas();
     }
 
+    var shouldBurn = false;
+    self.upStart = function() {
+        shouldBurn = true;
+    }
+
+    self.upEnd = function() {
+        shouldBurn = false;
+    }
+
     self.start = function() {
         world.tick(function() {
-            ship.burn();
+            if (shouldBurn) {
+                ship.burn();
+            }
+
+            physics.applyForce(ship, { x: 0, y: -0.1 });
+
             physics.apply();
         });
     }

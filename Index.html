@@ -36,6 +36,18 @@
 
     window.addEventListener('resize', setCanvas, false);
 
+    window.addEventListener('keydown', function(event) {
+        if (event.keyCode === 38) {
+            game.upStart();
+        }
+    });
+
+    window.addEventListener('keyup', function(event) {
+        if (event.keyCode === 38) {
+            game.upEnd();
+        }
+    });
+
     game.start();
 </script>
 </body>

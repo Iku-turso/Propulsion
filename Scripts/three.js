@@ -7652,7 +7652,7 @@ THREE.Object3D = function () {
 	this.channels = new THREE.Channels();
 	this.children = [];
 
-	this.up = THREE.Object3D.DefaultUp.clone();
+	this.upStart = THREE.Object3D.DefaultUp.clone();
 
 	var position = new THREE.Vector3();
 	var rotation = new THREE.Euler();
@@ -7943,7 +7943,7 @@ THREE.Object3D.prototype = {
 
 		return function ( vector ) {
 
-			m1.lookAt( vector, this.position, this.up );
+			m1.lookAt( vector, this.position, this.upStart );
 
 			this.quaternion.setFromRotationMatrix( m1 );
 
@@ -8358,7 +8358,7 @@ THREE.Object3D.prototype = {
 
 		this.name = source.name;
 
-		this.up.copy( source.up );
+		this.upStart.copy( source.upStart );
 
 		this.position.copy( source.position );
 		this.quaternion.copy( source.quaternion );
@@ -13609,7 +13609,7 @@ THREE.Camera.prototype.lookAt = function () {
 
 	return function ( vector ) {
 
-		m1.lookAt( this.position, vector, this.up );
+		m1.lookAt( this.position, vector, this.upStart );
 
 		this.quaternion.setFromRotationMatrix( m1 );
 
@@ -13652,32 +13652,32 @@ THREE.CubeCamera = function ( near, far, cubeResolution ) {
 	var fov = 90, aspect = 1;
 
 	var cameraPX = new THREE.PerspectiveCamera( fov, aspect, near, far );
-	cameraPX.up.set( 0, - 1, 0 );
+	cameraPX.upStart.set( 0, - 1, 0 );
 	cameraPX.lookAt( new THREE.Vector3( 1, 0, 0 ) );
 	this.add( cameraPX );
 
 	var cameraNX = new THREE.PerspectiveCamera( fov, aspect, near, far );
-	cameraNX.up.set( 0, - 1, 0 );
+	cameraNX.upStart.set( 0, - 1, 0 );
 	cameraNX.lookAt( new THREE.Vector3( - 1, 0, 0 ) );
 	this.add( cameraNX );
 
 	var cameraPY = new THREE.PerspectiveCamera( fov, aspect, near, far );
-	cameraPY.up.set( 0, 0, 1 );
+	cameraPY.upStart.set( 0, 0, 1 );
 	cameraPY.lookAt( new THREE.Vector3( 0, 1, 0 ) );
 	this.add( cameraPY );
 
 	var cameraNY = new THREE.PerspectiveCamera( fov, aspect, near, far );
-	cameraNY.up.set( 0, 0, - 1 );
+	cameraNY.upStart.set( 0, 0, - 1 );
 	cameraNY.lookAt( new THREE.Vector3( 0, - 1, 0 ) );
 	this.add( cameraNY );
 
 	var cameraPZ = new THREE.PerspectiveCamera( fov, aspect, near, far );
-	cameraPZ.up.set( 0, - 1, 0 );
+	cameraPZ.upStart.set( 0, - 1, 0 );
 	cameraPZ.lookAt( new THREE.Vector3( 0, 0, 1 ) );
 	this.add( cameraPZ );
 
 	var cameraNZ = new THREE.PerspectiveCamera( fov, aspect, near, far );
-	cameraNZ.up.set( 0, - 1, 0 );
+	cameraNZ.upStart.set( 0, - 1, 0 );
 	cameraNZ.lookAt( new THREE.Vector3( 0, 0, - 1 ) );
 	this.add( cameraNZ );
 
@@ -26773,7 +26773,7 @@ THREE.WebGLShadowMap = function ( _renderer, _lights, _objects ) {
 
 						_lookTarget.copy( shadowCamera.position );
 						_lookTarget.add( cubeDirections[ face ] );
-						shadowCamera.up.copy( cubeUps[ face ] );
+						shadowCamera.upStart.copy( cubeUps[ face ] );
 						shadowCamera.lookAt( _lookTarget );
 						var vpDimensions = cube2DViewPorts[ face ];
 						_renderer.setViewport( vpDimensions.x, vpDimensions.y, vpDimensions.z, vpDimensions.w );
@@ -29549,7 +29549,7 @@ THREE.AudioListener.prototype.updateMatrixWorld = ( function () {
 		THREE.Object3D.prototype.updateMatrixWorld.call( this, force );
 
 		var listener = this.context.listener;
-		var up = this.up;
+		var up = this.upStart;
 
 		this.matrixWorld.decompose( position, quaternion, scale );
 
