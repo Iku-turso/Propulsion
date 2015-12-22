@@ -93,16 +93,6 @@ describe('ThreeJsWorld', function() {
                 });
             });
 
-            describe('when render is called', function() {
-                beforeEach(function() {
-                    world.render();
-                });
-
-                it('should call renderer with scene and camera', function() {
-                    expect(rendererSpy.render).toHaveBeenCalledWith(sceneSpy, cameraSpy);
-                });
-            });
-
             describe('when tick is called with a callback', function() {
                 var callback;
                 beforeEach(function() {

@@ -22,10 +22,6 @@
         scene.add(shipMesh);
     };
 
-    self.render = function() {
-        renderer.render(scene, camera);
-    };
-
     self.setCanvas = function() {
         var width = window.innerWidth;
         var height = window.innerHeight;

@@ -13,9 +13,10 @@
     }
 
     self.start = function() {
-        world.render();
         world.tick(function() {
             ship.accelerate();
         });
     }
+
+
 }

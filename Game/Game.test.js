@@ -48,10 +48,6 @@ describe('Game', function() {
                 game.start();
             });
 
-            it('should render the world', function() {
-                expect(worldSpy.render).toHaveBeenCalled();
-            });
-
             it('should accelerate the ship on every tick', function() {
                 tickCallback();
                 tickCallback();
