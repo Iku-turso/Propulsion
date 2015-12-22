@@ -5,10 +5,6 @@ describe('Ship', function() {
     beforeEach(function() {
         ship = new Ship();
     });
-    
-    it('should exist', function() {
-        expect(Ship).toBeDefined();
-    });
 
     it('should have x-coordinate 0', function() {
         expect(ship.x).toBe(0);
@@ -16,6 +12,22 @@ describe('Ship', function() {
 
     it('should have y-coordinate 0', function() {
         expect(ship.y).toBe(0);
+    });
+
+    it('should have x-velocity 0', function() {
+        expect(ship.xVelocity).toBe(0);
+    });
+
+    it('should have y-velocity 0', function() {
+        expect(ship.yVelocity).toBe(0);
+    });
+
+    it('should have direction pointing up', function() {
+        expect(ship.direction).toBe(Math.PI / 2);
+    });
+
+    it('should have angular velocity 0', function() {
+        expect(ship.angularVelocity).toBe(0);
     });
 
     it('should have y-coordinate 0.01 when accelerate is called', function() {
