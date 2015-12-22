@@ -1,14 +1,21 @@
-﻿di.register('container').instance(document.body);
+﻿di.register('locate').instance(di.resolve);
+
+di.register('container').instance(document.body);
 
 di.register('window').instance(window);
 
 di.register('wait').instance(requestAnimationFrame);
+
+di.register('physics')
+    .as(SimplePhysics)
+    .asSingleton();
 
 di.register('threeJsCamera')
     .as(THREE.PerspectiveCamera)
     .asSingleton()
     .setFactory(function() {
         var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 10000);
+        // This logic should be in game, and tested.
         camera.position.z = 10;
         return camera;
     });
@@ -34,14 +41,23 @@ di.register('world')
     .param().ref('window')
     .param().ref('wait');
 
+di.register('ship')
+    .as(Ship)
+    .withConstructor()
+    .param().ref('physics');
+
 di.register('shipFactory')
     .as(ShipFactory)
     .asSingleton()
-    .withConstructor();
+    .withConstructor()
+    .param().ref('world')
+    .param().ref('physics')
+    .param().ref('locate');
 
 di.register('game')
     .as(Game)
     .asSingleton()
     .withConstructor()
     .param().ref('shipFactory')
-    .param().ref('world');
+    .param().ref('world')
+    .param().ref('physics');

@@ -1,11 +1,10 @@
-﻿Game = function(shipFactory, world) {
+﻿Game = function(shipFactory, world, physics) {
     var self = this;
     var ship;
 
     self.init = function() {
         world.init();
         ship = shipFactory.create();
-        world.add(ship);
     }
 
     self.setCanvas = function() {
@@ -14,9 +13,8 @@
 
     self.start = function() {
         world.tick(function() {
-            ship.accelerate();
+            ship.burn();
+            physics.apply();
         });
     }
-
-
 }

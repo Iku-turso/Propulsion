@@ -4,20 +4,23 @@ describe('Game', function() {
     var shipFactorySpy;
     var shipSpy;
     var worldSpy;
+    var physicsSpy;
     var game;
     var tickCallback;
 
     beforeEach(function() {
-        shipSpy = jasmine.createSpyObj('shipSpy', ['accelerate']);
+        shipSpy = jasmine.createSpyObj('shipSpy', ['accelerate', 'burn']);
         shipFactorySpy = jasmine.createSpyObj('shipFactorySpy', ['create']);
         shipFactorySpy.create.and.returnValue(shipSpy);
 
-        worldSpy = jasmine.createSpyObj('worldSpy', ['add', 'init', 'render', 'setCanvas', 'tick']);
+        worldSpy = jasmine.createSpyObj('worldSpy', ['init', 'render', 'setCanvas', 'tick']);
         worldSpy.tick.and.callFake(function(callback) {
             tickCallback = callback;
         });
 
-        game = new Game(shipFactorySpy, worldSpy);
+        physicsSpy = jasmine.createSpyObj('physicsSpy', ['apply']);
+
+        game = new Game(shipFactorySpy, worldSpy, physicsSpy);
     });
 
     describe('when init is called', function() {
@@ -33,10 +36,6 @@ describe('Game', function() {
             expect(worldSpy.init).toHaveBeenCalled();
         });
 
-        it('should add the ship from shipFactory to world', function() {
-            expect(worldSpy.add).toHaveBeenCalledWith(shipSpy);
-        });
-
         it('setCanvas should call world.setCanvas', function() {
             game.setCanvas();
 
@@ -48,11 +47,18 @@ describe('Game', function() {
                 game.start();
             });
 
-            it('should accelerate the ship on every tick', function() {
-                tickCallback();
-                tickCallback();
-                tickCallback();
-                expect(shipSpy.accelerate.calls.count()).toEqual(3);
+            describe('when tickCallback is called', function() {
+                beforeEach(function() {
+                    tickCallback();
+                });
+
+                it('should have the ship burn', function() {
+                    expect(shipSpy.burn).toHaveBeenCalled();
+                });
+
+                it('should apply physics', function() {
+                    expect(physicsSpy.apply).toHaveBeenCalled();
+                });
             });
         });
     });
