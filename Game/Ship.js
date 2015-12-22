@@ -6,7 +6,8 @@
     self.yVelocity = 0;
     self.direction = Math.PI / 2;
     self.angularVelocity = 0;
-    
+    self.mass = 1000;
+
     var _isAccelerating = false;
     self.isAccelerating = function() {
         return _isAccelerating;
@@ -25,7 +26,7 @@
     }
 
     self.burn = function() {
-        var force = 0.001;
+        var force = 1;
         var resolution = 1000;
         var burnVector = {
             x: Math.round(Math.cos(self.direction) * force * resolution) / resolution,

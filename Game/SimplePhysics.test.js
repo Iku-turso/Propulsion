@@ -15,7 +15,7 @@ describe('SimplePhysics when ship is added', function() {
         });
 
         it('ship\'s yVelocity should be 123', function() {
-            expect(ship.yVelocity).toBe(123);
+            expect(ship.yVelocity).toBe(0.123);
         });
 
         it('ship\'s xVelocity should be 0', function() {
@@ -28,11 +28,11 @@ describe('SimplePhysics when ship is added', function() {
                 physics.apply();
             });
 
-            it('ship\'s y should be 123 * 2 = 246', function() {
-                expect(ship.y).toBe(246);
+            it('ship\'s y should be 123 * 2 / 1000 = 246', function() {
+                expect(ship.y).toBe(0.246);
             });
 
-            it('ship\'s x should be 0 * 2 = 0', function() {
+            it('ship\'s x should be 0 * 2 / 1000 = 0', function() {
                 expect(ship.x).toBe(0);
             });
 
@@ -41,12 +41,12 @@ describe('SimplePhysics when ship is added', function() {
                     physics.applyForce(ship, { x: -1, y: 0 });
                 });
 
-                it('ship\'s yVelocity should be 123', function() {
-                    expect(ship.yVelocity).toBe(123);
+                it('ship\'s yVelocity should be 0.123', function() {
+                    expect(ship.yVelocity).toBe(0.123);
                 });
 
-                it('ship\'s xVelocity should be 0', function() {
-                    expect(ship.xVelocity).toBe(-1);
+                it('ship\'s xVelocity should be -0.001', function() {
+                    expect(ship.xVelocity).toBe(-0.001);
                 });
 
                 describe('when physics are applied once', function() {
@@ -54,12 +54,12 @@ describe('SimplePhysics when ship is added', function() {
                         physics.apply();
                     });
 
-                    it('ship\'s y should be 123 * 3 = 369', function() {
-                        expect(ship.y).toBe(369);
+                    it('ship\'s y should be 123 * 3 / 1000 = 0.369', function() {
+                        expect(ship.y).toBe(0.369);
                     });
 
-                    it('ship\'s x should be -1 * 1 = 1', function() {
-                        expect(ship.x).toBe(-1);
+                    it('ship\'s x should be -1 * 1 / 1000 = -0.001', function() {
+                        expect(ship.x).toBe(-0.001);
                     });
                 });
             });

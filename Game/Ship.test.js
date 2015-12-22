@@ -33,6 +33,10 @@ describe('Ship', function() {
         expect(ship.angularVelocity).toBe(0);
     });
 
+    it('should have mass 1000', function() {
+        expect(ship.mass).toBe(1000);
+    });
+
     it('should have y-coordinate 0.01 when accelerate is called', function() {
         ship.accelerate();
 
@@ -59,14 +63,14 @@ describe('Ship', function() {
         ship.direction = Math.PI / 2;
         ship.burn();
 
-        expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ x: 0, y: 0.001 }));
+        expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ x: 0, y: 1 }));
     });
 
     it('should apply a leftward force to ship when the ship\'s direction is left and when burning', function() {
         ship.direction = Math.PI;
         ship.burn();
 
-        expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ x: -0.001, y: 0 }));
+        expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ x: -1, y: 0 }));
     });
 });
 
