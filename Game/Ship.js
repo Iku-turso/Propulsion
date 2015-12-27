@@ -8,14 +8,53 @@
     self.angularVelocity = 0;
     self.mass = 1000;
     self.id = Math.random();
+
+    var boosting = false;
+    self.startBoost = function() {
+        boosting = true;
+    };
+
+    self.stopBoost = function() {
+        boosting = false;
+    };
+
+    var turn = 0;
+    self.startSteerLeft = function() {
+        turn = 1;
+    };
+
+    self.stopSteerLeft = function() {
+        turn = 0;
+    };
+
+    self.startSteerRight = function() {
+        turn = -1;
+    };
+
+    self.stopSteerRight = function() {
+        turn = 0;
+    };
+
     self.live = function() {
-        
-    }
+        if (boosting) {
+            var force = 1;
+            var burnVector = {
+                x: Math.cos(self.direction) * force,
+                y: Math.sin(self.direction) * force
+            };
+            physics.applyForce(self, burnVector);
+        }
+
+        if (turn) {
+            physics.applyAngularForce(self, turn);
+        }
+    };
 
     self.shoot = function() {
         missileFactory.create(self);
     };
 
+    // Todo: start using the new boost instead of burn.
     self.burn = function() {
         var force = 1;
         var burnVector = {
@@ -23,15 +62,15 @@
             y: Math.sin(self.direction) * force
         };
         physics.applyForce(self, burnVector);
-    }
+    };
 
     self.steerLeft = function() {
         physics.applyAngularForce(self, 1);
-    }
+    };
 
     self.steerRight = function() {
         physics.applyAngularForce(self, -1);
-    }
+    };
 };
 
 ShipFactory = function(world, physics, locate, gameObjects) {
@@ -42,5 +81,5 @@ ShipFactory = function(world, physics, locate, gameObjects) {
         physics.add(ship);
         gameObjects.push(ship);
         return ship;
-    }
+    };
 };

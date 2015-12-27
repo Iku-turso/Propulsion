@@ -43,6 +43,7 @@ describe('Ship', function() {
         expect(ship.live).toEqual(jasmine.any(Function));
     });
 
+    // Todo: physics.applyForwardForce();
     it('should apply an upward force to ship when the ship\'s direction is up when burning', function() {
         ship.direction = Math.PI / 2;
         ship.burn();
@@ -77,6 +78,51 @@ describe('Ship', function() {
 
     it('should have id', function() {
         expect(ship.id).toEqual(jasmine.any(Number));
+    });
+
+    it('should apply force when boosting and the world ticks', function() {
+        ship.startBoost();
+        ship.live();
+
+        expect(physicsSpy.applyForce).toHaveBeenCalled();
+    });
+
+    it('should not apply force when boosting is stopped before the world ticks', function() {
+        ship.startBoost();
+        ship.stopBoost();
+        ship.live();
+
+        expect(physicsSpy.applyForce).not.toHaveBeenCalled();
+    });
+
+    it('should apply angular force to left when steering left and the world ticks', function() {
+        ship.startSteerLeft();
+        ship.live();
+
+        expect(physicsSpy.applyAngularForce).toHaveBeenCalledWith(ship, 1);
+    });
+
+    it('should not apply force when steering left has stopped before the world ticks', function() {
+        ship.startSteerLeft();
+        ship.stopSteerLeft();
+        ship.live();
+
+        expect(physicsSpy.applyAngularForce).not.toHaveBeenCalled();
+    });
+
+    it('should apply angular force to right when steering right and the world ticks', function() {
+        ship.startSteerRight();
+        ship.live();
+
+        expect(physicsSpy.applyAngularForce).toHaveBeenCalledWith(ship, -1);
+    });
+
+    it('should not apply force when steering right has stopped before the world ticks', function() {
+        ship.startSteerRight();
+        ship.stopSteerRight();
+        ship.live();
+
+        expect(physicsSpy.applyAngularForce).not.toHaveBeenCalled();
     });
 });
 

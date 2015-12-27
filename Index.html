@@ -57,6 +57,18 @@
         case 32:
             game.shoot();
             break;
+        case 87:
+            game.startShip2Boost();
+            break;
+        case 65:
+            game.startShip2SteerLeft();
+            break;
+        case 68:
+            game.startShip2SteerRight();
+            break;
+        case 17:
+            game.ship2Shoot();
+            break;
         }
     });
 
@@ -71,6 +83,15 @@
             break;
         case 39:
             game.rightEnd();
+            break;
+        case 87:
+            game.stopShip2Boost();
+            break;
+        case 65:
+            game.stopShip2SteerLeft();
+            break;
+        case 68:
+            game.stopShip2SteerRight();
             break;
         }
     });

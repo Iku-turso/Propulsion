@@ -1,6 +1,7 @@
 ﻿Game = function(shipFactory, world, physics, gameObjects) {
     var self = this;
-    var ship;
+    var ship1;
+    var ship2;
 
     self.init = function() {
         world.init();
@@ -13,6 +14,34 @@
     var shouldBurn = false;
     self.upStart = function() {
         shouldBurn = true;
+    }
+
+    self.startShip2Boost = function() {
+        ship2.startBoost();
+    }
+
+    self.stopShip2Boost = function() {
+        ship2.stopBoost();
+    }
+
+    self.startShip2SteerLeft = function() {
+        ship2.startSteerLeft();
+    }
+
+    self.stopShip2SteerLeft = function() {
+        ship2.stopSteerLeft();
+    }
+
+    self.startShip2SteerRight = function() {
+        ship2.startSteerRight();
+    }
+
+    self.stopShip2SteerRight = function() {
+        ship2.stopSteerRight();
+    }
+
+    self.ship2Shoot = function() {
+        ship2.shoot();
     }
 
     self.upEnd = function() {
@@ -38,23 +67,24 @@
     }
 
     self.shoot = function() {
-        ship.shoot();
+        ship1.shoot();
     }
 
     self.start = function() {
-        ship = shipFactory.create();
+        ship1 = shipFactory.create();
+        ship2 = shipFactory.create();
         
         world.tick(function() {
             if (shouldBurn) {
-                ship.burn();
+                ship1.burn();
             }
 
             if (shouldSteerLeft) {
-                ship.steerLeft();
+                ship1.steerLeft();
             }
 
             if (shouldSteerRight) {
-                ship.steerRight();
+                ship1.steerRight();
             }
 
             // Todo: should gameObjects be an array or a class?
@@ -62,7 +92,7 @@
                 go.live();
             });
 
-            physics.applyForce(ship, { x: 0, y: -0.1 });
+            physics.applyForce(ship1, { x: 0, y: -0.1 });
 
             physics.apply();
         });
