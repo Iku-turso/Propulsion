@@ -48,24 +48,6 @@
     self.shoot = function() {
         missileFactory.create(self);
     };
-
-    // Todo: start using the new boost instead of burn.
-    self.burn = function() {
-        var force = 1;
-        var burnVector = {
-            x: Math.cos(self.direction) * force,
-            y: Math.sin(self.direction) * force
-        };
-        physics.applyForce(self, burnVector);
-    };
-
-    self.steerLeft = function() {
-        physics.applyAngularForce(self, 1);
-    };
-
-    self.steerRight = function() {
-        physics.applyAngularForce(self, -1);
-    };
 };
 
 ShipFactory = function(world, physics, locate, gameObjects) {

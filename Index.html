@@ -37,6 +37,10 @@
 
     window.addEventListener('resize', setCanvas, false);
 
+    game.start();
+
+    var ship1 = game.ships[0];
+    var ship2 = game.ships[1];
     var pressed = {};
     window.addEventListener('keydown', function(event) {
         if (pressed[event.keyCode]) {
@@ -46,28 +50,28 @@
 
         switch (event.keyCode) {
         case 38:
-            game.upStart();
+            ship1.startBoost();
             break;
         case 37:
-            game.leftStart();
+            ship1.startSteerLeft();
             break;
         case 39:
-            game.rightStart();
+            ship1.startSteerRight();
             break;
         case 32:
-            game.shoot();
+            ship1.shoot();
             break;
         case 87:
-            game.startShip2Boost();
+            ship2.startBoost();
             break;
         case 65:
-            game.startShip2SteerLeft();
+            ship2.startSteerLeft();
             break;
         case 68:
-            game.startShip2SteerRight();
+            ship2.startSteerRight();
             break;
         case 17:
-            game.ship2Shoot();
+            ship2.shoot();
             break;
         }
     });
@@ -76,27 +80,26 @@
         pressed[event.keyCode] = false;
         switch (event.keyCode) {
         case 38:
-            game.upEnd();
+            ship1.stopBoost();
             break;
         case 37:
-            game.leftEnd();
+            ship1.stopSteerLeft();
             break;
         case 39:
-            game.rightEnd();
+            ship1.stopSteerRight();
             break;
         case 87:
-            game.stopShip2Boost();
+            ship2.stopBoost();
             break;
         case 65:
-            game.stopShip2SteerLeft();
+            ship2.stopSteerLeft();
             break;
         case 68:
-            game.stopShip2SteerRight();
+            ship2.stopSteerRight();
             break;
         }
     });
 
-    game.start();
 </script>
 </body>
 </html>

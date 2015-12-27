@@ -61,124 +61,13 @@ describe('Game', function() {
                 expect(shipFactorySpy.create.calls.count()).toEqual(2);
             });
 
-            it('should not burn when upStart is called', function() {
-                game.upStart();
-
-                expect(ship1Spy.burn).not.toHaveBeenCalled();
-            });
-
-            it('should burn when upStart is called and tickCallback is called', function() {
-                game.upStart();
-                tickCallback();
-
-                expect(ship1Spy.burn).toHaveBeenCalled();
-            });
-
-            it('should start to boost ship 2 when startShip2Boost is called', function() {
-                game.startShip2Boost();
-
-                expect(ship2Spy.startBoost).toHaveBeenCalled();
-            });
-
-            it('should stop to boost ship 2 when stopShip2Boost is called', function() {
-                game.stopShip2Boost();
-
-                expect(ship2Spy.stopBoost).toHaveBeenCalled();
-            });
-
-            it('should start to steer left ship 2 when startShip2SteerLeft is called', function() {
-                game.startShip2SteerLeft();
-
-                expect(ship2Spy.startSteerLeft).toHaveBeenCalled();
-            });
-
-            it('should stop to steer left ship 2 when stopShip2SteerLeft is called', function() {
-                game.stopShip2SteerLeft();
-
-                expect(ship2Spy.stopSteerLeft).toHaveBeenCalled();
-            });
-
-            it('should start to steer right ship 2 when startShip2SteerRight is called', function() {
-                game.startShip2SteerRight();
-
-                expect(ship2Spy.startSteerRight).toHaveBeenCalled();
-            });
-
-            it('should stop to steer right ship 2 when stopShip2SteerRight is called', function() {
-                game.stopShip2SteerRight();
-
-                expect(ship2Spy.stopSteerRight).toHaveBeenCalled();
-            });
-
-            it('should shoot ship 2 when ship2Shoot is called', function() {
-                game.ship2Shoot();
-
-                expect(ship2Spy.shoot).toHaveBeenCalled();
-            });
-
-            it('should not burn when up is called and upEnd is called and tickCallback is called', function() {
-                game.upStart();
-                game.upEnd();
-                tickCallback();
-
-                expect(ship1Spy.burn).not.toHaveBeenCalled();
-            });
-
-            it('should not steer left when leftStart is called', function() {
-                game.leftStart();
-
-                expect(ship1Spy.steerLeft).not.toHaveBeenCalled();
-            });
-
-            it('should steer left when leftStart is called and tickCallback is called', function() {
-                game.leftStart();
-                tickCallback();
-
-                expect(ship1Spy.steerLeft).toHaveBeenCalled();
-            });
-
-            it('should not steer left when left is called and leftEnd is called and tickCallback is called', function() {
-                game.leftStart();
-                game.leftEnd();
-                tickCallback();
-
-                expect(ship1Spy.steerLeft).not.toHaveBeenCalled();
-            });
-
-            it('should not steer right when rightStart is called', function() {
-                game.rightStart();
-
-                expect(ship1Spy.steerRight).not.toHaveBeenCalled();
-            });
-
-            it('should steer right when rightStart is called and tickCallback is called', function() {
-                game.rightStart();
-                tickCallback();
-
-                expect(ship1Spy.steerRight).toHaveBeenCalled();
-            });
-
-            it('should not steer right when right is called and rightEnd is called and tickCallback is called', function() {
-                game.rightStart();
-                game.rightEnd();
-                tickCallback();
-
-                expect(ship1Spy.steerRight).not.toHaveBeenCalled();
-            });
-
-            it('ship should shoot when game shoots', function() {
-                game.shoot();
-
-                expect(ship1Spy.shoot).toHaveBeenCalled();
+            it('game should have two ships from shipFactory', function() {
+                expect(game.ships).toEqual([ship1Spy, ship2Spy]);
             });
 
             describe('when tickCallback is called', function() {
                 beforeEach(function() {
                     tickCallback();
-                });
-
-                it('should apply gravity to ship', function() {
-                    expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship1Spy, jasmine.objectContaining({ x: 0, y: -0.1 }));
                 });
 
                 it('should not burn', function() {
