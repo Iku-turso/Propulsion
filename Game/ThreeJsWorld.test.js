@@ -147,8 +147,8 @@ describe('ThreeJsWorld', function() {
                     expect(mesh.position).toEqual(jasmine.objectContaining({ x: 222, y: 123 }));
                 });
 
-                it('should update mesh\'s direction to missile\'s direction', function() {
-                    expect(mesh.rotation.z).toEqual(333);
+                it('should update mesh\'s direction to missile\'s direction with PI / 2 offset', function() {
+                    expect(mesh.rotation.z).toBeCloseTo(331.43, 2);
                 });
             });
         });
@@ -165,8 +165,8 @@ describe('ThreeJsWorld', function() {
             });
 
             describe('the added mesh', function() {
-                it('should be a box', function() {
-                    expect(mesh.geometry).toEqual(jasmine.any(THREE.BoxGeometry));
+                it('should be a cylinder', function() {
+                    expect(mesh.geometry).toEqual(jasmine.any(THREE.CylinderGeometry));
                 });
 
                 it('should be in origo', function() {
@@ -192,8 +192,8 @@ describe('ThreeJsWorld', function() {
                     expect(mesh.position).toEqual(jasmine.objectContaining({ x: 222, y: 123 }));
                 });
 
-                it('should update mesh\'s direction to ship\'s direction', function() {
-                    expect(mesh.rotation.z).toEqual(333);
+                it('should update mesh\'s direction to ship\'s direction with PI / 2 offset', function() {
+                    expect(mesh.rotation.z).toBeCloseTo(331.43, 2);
                 });
             });
         });

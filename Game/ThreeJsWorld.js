@@ -11,7 +11,7 @@
     self.add = function(obj) {
         if (obj instanceof Ship) {
             ship = obj;
-            var geometry = new THREE.BoxGeometry(1, 1, 1);
+            var geometry = new THREE.CylinderGeometry(0, .5, 1);
             for (var i = 0; i < geometry.faces.length; i += 2) {
                 var hex = Math.random() * 0xffffff;
                 geometry.faces[i].color.setHex(hex);
@@ -25,8 +25,7 @@
         }
 
         if (obj instanceof Missile) {
-            // Todo: These coordinates seem wrong. The missile flies sideways?
-            var missileGeometry = new THREE.BoxGeometry(0.3, 0.1, 0.1);
+            var missileGeometry = new THREE.BoxGeometry(0.1, 0.3, 0.1);
             var missileMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
             var missileMesh = new THREE.Mesh(missileGeometry, missileMaterial);
             missileMesh.position.x = obj.x;
@@ -53,7 +52,8 @@
         meshesAndObjects.forEach(function(meshAndObject) {
             meshAndObject.mesh.position.x = meshAndObject.object.x;
             meshAndObject.mesh.position.y = meshAndObject.object.y;
-            meshAndObject.mesh.rotation.z = meshAndObject.object.direction;
+            // Todo: Find out why we need this offset. Why doesn't mesh.rotation.z = 0 mean east, but instead means north?
+            meshAndObject.mesh.rotation.z = meshAndObject.object.direction - Math.PI / 2;
         });
         wait(animate);
         renderer.render(scene, camera);

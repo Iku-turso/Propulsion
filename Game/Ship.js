@@ -1,4 +1,4 @@
-﻿Ship = function(physics, missileFactory, gameObjects) {
+﻿Ship = function(physics, missileFactory) {
     var self = this;
     self.x = 0;
     self.y = 0;
