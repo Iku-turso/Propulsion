@@ -18,10 +18,9 @@
 
     self.burn = function() {
         var force = 1;
-        var resolution = 1000;
         var burnVector = {
-            x: Math.round(Math.cos(self.direction) * force * resolution) / resolution,
-            y: Math.round(Math.sin(self.direction) * force * resolution) / resolution
+            x: Math.cos(self.direction) * force,
+            y: Math.sin(self.direction) * force
         };
         physics.applyForce(self, burnVector);
     }

@@ -47,14 +47,14 @@ describe('Ship', function() {
         ship.direction = Math.PI / 2;
         ship.burn();
 
-        expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ x: 0, y: 1 }));
+        expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ y: 1 }));
     });
 
     it('should apply a leftward force to ship when the ship\'s direction is left when burning', function() {
         ship.direction = Math.PI;
         ship.burn();
 
-        expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ x: -1, y: 0 }));
+        expect(physicsSpy.applyForce).toHaveBeenCalledWith(ship, jasmine.objectContaining({ x: -1 }));
     });
 
     it('should apply a counter-clockwise angular force when steering left', function() {
