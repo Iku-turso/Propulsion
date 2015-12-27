@@ -4,7 +4,7 @@ describe('Missile', function() {
     var missile;
     var physicsSpy;
     beforeEach(function() {
-        physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForce']);
+        physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForwardForce']);
         missile = new Missile(physicsSpy);
     });
 
@@ -48,10 +48,10 @@ describe('Missile', function() {
         expect(missile.live).toEqual(jasmine.any(Function));
     });
 
-    it('should apply force when live is called', function() {
+    it('should apply forward force when live is called', function() {
         missile.live();
 
-        expect(physicsSpy.applyForce).toHaveBeenCalledWith(missile, jasmine.objectContaining({ x: 0.1, y: 0 }));
+        expect(physicsSpy.applyForwardForce).toHaveBeenCalledWith(missile, 0.1);
     });
 });
 

@@ -37,12 +37,7 @@
 
     self.live = function() {
         if (boosting) {
-            var force = 1;
-            var burnVector = {
-                x: Math.cos(self.direction) * force,
-                y: Math.sin(self.direction) * force
-            };
-            physics.applyForce(self, burnVector);
+            physics.applyForwardForce(self, 1);
         }
 
         if (turn) {

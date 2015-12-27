@@ -10,6 +10,15 @@
         object.angularVelocity += force / object.mass;
     };
 
+    self.applyForwardForce = function(object, force) {
+        var vector = {
+            x: Math.cos(object.direction) * force,
+            y: Math.sin(object.direction) * force
+        };
+        
+        self.applyForce(object, vector);
+    };
+
     var physicalObjects = [];
     self.add = function(object) {
         physicalObjects.push(object);

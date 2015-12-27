@@ -10,13 +10,7 @@
     self.angularVelocity = 0;
     self.id = Math.random();
     self.live = function() {
-        // Todo: this code is duplicate with ship's burn.
-        var force = 0.1;
-        var burnVector = {
-            x: Math.cos(self.direction) * force,
-            y: Math.sin(self.direction) * force
-        };
-        physics.applyForce(self, burnVector);
+        physics.applyForwardForce(self, 0.1);
     };
 };
 

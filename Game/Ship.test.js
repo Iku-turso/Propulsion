@@ -6,7 +6,7 @@ describe('Ship', function() {
     var missileFactorySpy;
 
     beforeEach(function() {
-        physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForce', 'applyAngularForce']);
+        physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForce', 'applyForwardForce', 'applyAngularForce']);
         missileFactorySpy = jasmine.createSpyObj('missileFactorySpy', ['create']);
         ship = new Ship(physicsSpy, missileFactorySpy);
     });
@@ -80,19 +80,19 @@ describe('Ship', function() {
         expect(ship.id).toEqual(jasmine.any(Number));
     });
 
-    it('should apply force when boosting and the world ticks', function() {
+    it('should apply forward force when boosting and the world ticks', function() {
         ship.startBoost();
         ship.live();
 
-        expect(physicsSpy.applyForce).toHaveBeenCalled();
+        expect(physicsSpy.applyForwardForce).toHaveBeenCalledWith(ship, 1);
     });
 
-    it('should not apply force when boosting is stopped before the world ticks', function() {
+    it('should not apply forward force when boosting is stopped before the world ticks', function() {
         ship.startBoost();
         ship.stopBoost();
         ship.live();
 
-        expect(physicsSpy.applyForce).not.toHaveBeenCalled();
+        expect(physicsSpy.applyForwardForce).not.toHaveBeenCalled();
     });
 
     it('should apply angular force to left when steering left and the world ticks', function() {

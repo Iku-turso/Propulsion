@@ -67,6 +67,18 @@ describe('SimplePhysics when ship is added', function() {
         });
     });
 
+    it('given ship is facing right, ship should accelerate right when a forward force is applied', function() {
+        ship.direction = 0;
+        physics.applyForwardForce(ship, 1);
+        expect(ship.xVelocity).toBe(0.001);
+    });
+
+    it('given ship is facing up, ship should accelerate up when a forward force is applied', function() {
+        ship.direction = Math.PI / 2;
+        physics.applyForwardForce(ship, 1);
+        expect(ship.yVelocity).toBe(0.001);
+    });
+
     describe('when applyAngularForce is called with PI for a ship pointing right', function() {
         beforeEach(function() {
             ship.direction = 0;
