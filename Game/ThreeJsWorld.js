@@ -1,6 +1,5 @@
 ﻿ThreeJsWorld = function(scene, renderer, camera, container, window, wait, meshById) {
     var self = this;
-    var ship;
 
     self.init = function() {
         scene.add(camera);
@@ -18,7 +17,6 @@
     var meshesAndObjects = [];
     self.add = function(obj) {
         if (obj instanceof Ship) {
-            ship = obj;
             var geometry = new THREE.CylinderGeometry(0, .5, 1);
             var shipMaterial = new THREE.MeshLambertMaterial();
             var shipPhysicsMaterial = Physijs.createMaterial(shipMaterial, 0, 1);
@@ -29,7 +27,7 @@
             shipMesh.rotation.z = obj.direction - Math.PI / 2;
 
             scene.add(shipMesh);
-            meshesAndObjects.push({ mesh: shipMesh, object: ship });
+            meshesAndObjects.push({ mesh: shipMesh, object: obj });
             meshById[obj.id] = shipMesh;
         }
 
