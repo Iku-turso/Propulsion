@@ -64,6 +64,7 @@
     <Content Include="Game\Missile.test.js" />
     <Content Include="Game\ShipFactory.js" />
     <Content Include="Game\ShipFactory.test.js" />
+    <Content Include="Game\PhysiJsPhysics.js" />
     <Content Include="Game\SimplePhysics.js" />
     <Content Include="Game\SimplePhysics.test.js" />
     <Content Include="Game\ThreeJsWorld.test.js" />
@@ -73,8 +74,11 @@
     <Content Include="Game\Game.test.js" />
     <Content Include="Game\Ship.js" />
     <Content Include="Index.html" />
+    <Content Include="Scripts\ammo.js" />
     <Content Include="Scripts\di4js.js" />
     <Content Include="Scripts\di4js.min.js" />
+    <Content Include="Scripts\physi.js" />
+    <Content Include="Scripts\physijs_worker.js" />
     <Content Include="Scripts\three.js" />
     <Content Include="Scripts\three.min.js" />
     <Content Include="Web.config" />

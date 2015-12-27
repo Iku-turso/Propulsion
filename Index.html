@@ -19,6 +19,11 @@
 <body>
 <script src="Scripts/three.js"></script>
 <script src="Scripts/di4js.js"></script>
+<script src="Scripts/physi.js"></script>
+<script>
+    Physijs.scripts.worker = 'Scripts/physijs_worker.js';
+    Physijs.scripts.ammo = 'ammo.js';
+</script>
 <script src="Game/Game.js"></script>
 <script src="Game/Ship.js"></script>
 <script src="Game/ShipFactory.js"></script>
@@ -26,6 +31,7 @@
 <script src="Game/Missile.js"></script>
 <script src="Game/MissileFactory.js"></script>
 <script src="Game/SimplePhysics.js"></script>
+<script src="Game/PhysiJsPhysics.js"></script>
 <script src="Game/DependencyInversionWireUp.js"></script>
 <script>
     var game = di.resolve('game');

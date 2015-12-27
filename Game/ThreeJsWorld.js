@@ -1,9 +1,10 @@
-﻿ThreeJsWorld = function(scene, renderer, camera, container, window, wait) {
+﻿ThreeJsWorld = function(scene, renderer, camera, container, window, wait, meshById) {
     var self = this;
     var ship;
 
     self.init = function() {
         scene.add(camera);
+        scene.setGravity(new THREE.Vector3(0, 0, 0));
         container.appendChild(renderer.domElement);
     };
 
@@ -18,22 +19,34 @@
                 geometry.faces[i + 1].color.setHex(hex);
             }
             var shipMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+            var shipPhysicsMaterial = Physijs.createMaterial(shipMaterial, 0, 1);
+            var shipMesh = new Physijs.ConeMesh(geometry, shipPhysicsMaterial, obj.mass);
+            shipMesh.position.x = obj.x;
+            shipMesh.position.y = obj.y;
+            // Todo: why the offset?
+            shipMesh.rotation.z = obj.direction - Math.PI / 2;
 
-            var shipMesh = new THREE.Mesh(geometry, shipMaterial);
             scene.add(shipMesh);
             meshesAndObjects.push({ mesh: shipMesh, object: ship });
+            meshById[obj.id] = shipMesh;
         }
 
         if (obj instanceof Missile) {
             var missileGeometry = new THREE.BoxGeometry(0.1, 0.3, 0.1);
-            var missileMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
-            var missileMesh = new THREE.Mesh(missileGeometry, missileMaterial);
+            var missileMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors }, 0, 1);
+            var missilePhysicsMaterial = Physijs.createMaterial(missileMaterial, 0, 1);
+            var missileMesh = new Physijs.BoxMesh(missileGeometry, missilePhysicsMaterial, obj.mass);
             missileMesh.position.x = obj.x;
             missileMesh.position.y = obj.y;
             missileMesh.rotation.z = obj.direction;
 
             scene.add(missileMesh);
+            
+            var initialVelocity = new THREE.Vector3(obj.xVelocity, obj.yVelocity, 0);
+            missileMesh.setLinearVelocity(initialVelocity);
+
             meshesAndObjects.push({ mesh: missileMesh, object: obj });
+            meshById[obj.id] = missileMesh;
         }
     };
 
@@ -49,11 +62,17 @@
     var animate = function() {
         // Todo: find out the correct order of this stuff.
         tickCallback();
+        scene.simulate();
         meshesAndObjects.forEach(function(meshAndObject) {
-            meshAndObject.mesh.position.x = meshAndObject.object.x;
-            meshAndObject.mesh.position.y = meshAndObject.object.y;
-            // Todo: Find out why we need this offset. Why doesn't mesh.rotation.z = 0 mean east, but instead means north?
-            meshAndObject.mesh.rotation.z = meshAndObject.object.direction - Math.PI / 2;
+            var object = meshAndObject.object;
+            var mesh = meshAndObject.mesh;
+            object.x = mesh.position.x;
+            object.y = mesh.position.y;
+
+            var velocity = mesh.getLinearVelocity();
+            object.xVelocity = velocity.x;
+            object.yVelocity = velocity.y;
+            object.direction = mesh.rotation.z;
         });
         wait(animate);
         renderer.render(scene, camera);

@@ -8,9 +8,13 @@ di.register('wait').instance(requestAnimationFrame);
 
 di.register('gameObjects').instance([]);
 
+di.register('meshById').instance({});
+
 di.register('physics')
-    .as(SimplePhysics)
-    .asSingleton();
+    .as(PhysiJsPhysics)
+    .asSingleton()
+    .withConstructor()
+    .param().ref('meshById');
 
 di.register('threeJsCamera')
     .as(THREE.PerspectiveCamera)
@@ -28,7 +32,7 @@ di.register('threeJsRenderer')
     .withConstructor();
 
 di.register('threeJsScene')
-    .as(THREE.Scene)
+    .as(Physijs.Scene)
     .asSingleton()
     .withConstructor();
 
@@ -41,7 +45,8 @@ di.register('world')
     .param().ref('threeJsCamera')
     .param().ref('container')
     .param().ref('window')
-    .param().ref('wait');
+    .param().ref('wait')
+    .param().ref('meshById');
 
 di.register('missile')
     .as(Missile)
