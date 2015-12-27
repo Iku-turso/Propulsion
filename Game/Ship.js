@@ -37,11 +37,11 @@
 
     self.live = function() {
         if (boosting) {
-            physics.applyForwardForce(self, 1);
+            physics.applyForwardForce(self, 50);
         }
 
         if (turn) {
-            physics.applyAngularForce(self, turn);
+            physics.applyAngularForce(self, turn * 1000);
         }
     };
 
