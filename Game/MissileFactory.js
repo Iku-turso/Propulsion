@@ -3,8 +3,9 @@
 
     self.create = function(ship) {
         var missile = locate('missile');
-        missile.x = ship.x;
-        missile.y = ship.y;
+        // Todo: why the minus?
+        missile.x = ship.x + Math.sin(-ship.direction);
+        missile.y = ship.y + Math.cos(-ship.direction);
         missile.xVelocity = ship.xVelocity;
         missile.yVelocity = ship.yVelocity;
         missile.direction = ship.direction;
