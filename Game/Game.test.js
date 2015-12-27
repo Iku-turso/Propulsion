@@ -34,10 +34,6 @@ describe('Game', function() {
             game.init();
         });
 
-        it('should create a ship', function() {
-            expect(shipFactorySpy.create).toHaveBeenCalled();
-        });
-
         it('should init the world', function() {
             expect(worldSpy.init).toHaveBeenCalled();
         });
@@ -51,6 +47,10 @@ describe('Game', function() {
         describe('when game is started', function() {
             beforeEach(function() {
                 game.start();
+            });
+
+            it('should create a ship', function() {
+                expect(shipFactorySpy.create).toHaveBeenCalled();
             });
 
             it('should not burn when upStart is called', function() {

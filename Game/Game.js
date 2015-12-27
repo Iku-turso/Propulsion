@@ -4,7 +4,6 @@
 
     self.init = function() {
         world.init();
-        ship = shipFactory.create();
     }
 
     self.setCanvas = function() {
@@ -43,6 +42,8 @@
     }
 
     self.start = function() {
+        ship = shipFactory.create();
+        
         world.tick(function() {
             if (shouldBurn) {
                 ship.burn();
