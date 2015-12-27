@@ -5,6 +5,13 @@
     self.init = function() {
         scene.add(camera);
         scene.setGravity(new THREE.Vector3(0, 0, 0));
+        
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        scene.add(directionalLight);
+        
+        var ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+        
         container.appendChild(renderer.domElement);
     };
 
@@ -13,12 +20,7 @@
         if (obj instanceof Ship) {
             ship = obj;
             var geometry = new THREE.CylinderGeometry(0, .5, 1);
-            for (var i = 0; i < geometry.faces.length; i += 2) {
-                var hex = Math.random() * 0xffffff;
-                geometry.faces[i].color.setHex(hex);
-                geometry.faces[i + 1].color.setHex(hex);
-            }
-            var shipMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+            var shipMaterial = new THREE.MeshLambertMaterial();
             var shipPhysicsMaterial = Physijs.createMaterial(shipMaterial, 0, 1);
             var shipMesh = new Physijs.ConeMesh(geometry, shipPhysicsMaterial, obj.mass);
             shipMesh.position.x = obj.x;
@@ -33,7 +35,7 @@
 
         if (obj instanceof Missile) {
             var missileGeometry = new THREE.BoxGeometry(0.1, 0.3, 0.1);
-            var missileMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors }, 0, 1);
+            var missileMaterial = new THREE.MeshLambertMaterial();
             var missilePhysicsMaterial = Physijs.createMaterial(missileMaterial, 0, 1);
             var missileMesh = new Physijs.BoxMesh(missileGeometry, missilePhysicsMaterial, obj.mass);
             missileMesh.position.x = obj.x;
@@ -41,7 +43,7 @@
             missileMesh.rotation.z = obj.direction;
 
             scene.add(missileMesh);
-            
+
             var initialVelocity = new THREE.Vector3(obj.xVelocity, obj.yVelocity, 0);
             missileMesh.setLinearVelocity(initialVelocity);
 
