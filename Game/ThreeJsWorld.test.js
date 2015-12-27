@@ -1,4 +1,6 @@
 ﻿/// <reference path="ThreeJsWorld.js" />
+/// <reference path="Ship.js" />
+/// <reference path="Missile.js" />
 /// <reference path="../Scripts/three.js" />
 describe('ThreeJsWorld', function() {
     var sceneSpy;
@@ -8,9 +10,13 @@ describe('ThreeJsWorld', function() {
     var container;
     var window;
     var waitSpy;
+    var mesh;
 
     beforeEach(function() {
         sceneSpy = jasmine.createSpyObj('sceneSpy', ['add', 'addedMissile']);
+        sceneSpy.add.and.callFake(function(m) {
+            mesh = m;
+        });
 
         rendererSpy = jasmine.createSpyObj('rendererSpy', ['render', 'setSize']);
         rendererSpy.domElement = {};
@@ -22,6 +28,7 @@ describe('ThreeJsWorld', function() {
         window = {};
 
         waitSpy = jasmine.createSpy('waitSpy');
+
         world = new ThreeJsWorld(sceneSpy, rendererSpy, cameraSpy, container, window, waitSpy);
     });
 
@@ -63,39 +70,97 @@ describe('ThreeJsWorld', function() {
             });
         });
 
-        describe('when addMissile is called with a missile', function() {
-            var missile;
-            var addedMesh;
+        describe('when the world ticks', function() {
+            var callback;
             beforeEach(function() {
-                sceneSpy.add.and.callFake(function(m) {
-                    addedMesh = m;
+                rendererSpy.render.calls.reset();
+                callback = jasmine.createSpy('tickCallback');
+                world.tick(callback);
+            });
+
+            it('should wait', function() {
+                expect(waitSpy).toHaveBeenCalled();
+            });
+
+            it('should call the callback', function() {
+                expect(callback).toHaveBeenCalled();
+            });
+
+            it('should call renderer with scene and camera', function() {
+                expect(rendererSpy.render).toHaveBeenCalledWith(sceneSpy, cameraSpy);
+            });
+        });
+
+        it('should not add a geometry to the scene when instance of an unknown class is added', function() {
+            sceneSpy.add.calls.reset();
+
+            var Unknown = function() {};
+            var unknown = new Unknown();
+            world.add(unknown);
+
+            expect(sceneSpy.add).not.toHaveBeenCalled();
+        });
+
+        describe('when add is called with a missile in x: 1, y: 2, direction: 3', function() {
+            var missile;
+            beforeEach(function() {
+                missile = new Missile();
+                missile.x = 1;
+                missile.y = 2;
+                missile.direction = 3;
+                world.add(missile);
+            });
+
+            it('should add a mesh to scene', function() {
+                expect(sceneSpy.add).toHaveBeenCalledWith(jasmine.any(THREE.Mesh));
+            });
+
+            describe('the added mesh', function() {
+                it('should be a box', function() {
+                    expect(mesh.geometry).toEqual(jasmine.any(THREE.BoxGeometry));
                 });
-                missile = { x: 1, y: 2, direction: 3 };
-                world.addMissile(missile);
+
+                it('should be in x: 1, y: 2, z: 0', function() {
+                    expect(mesh.position).toEqual(jasmine.objectContaining({ x: 1, y: 2, z: 0 }));
+                });
+
+                it('should have direction: 3', function() {
+                    expect(mesh.rotation.z).toBe(3);
+                });
+
+                it('should be made of basic material', function() {
+                    expect(mesh.material).toEqual(jasmine.any(THREE.MeshBasicMaterial));
+                });
             });
 
-            it('should add a mesh with missile\'s coordinates', function() {
-                expect(addedMesh.position).toEqual(jasmine.objectContaining({ x: 1, y: 2 }));
-            });
+            describe('when the world ticks', function() {
+                var callback;
+                beforeEach(function() {
+                    missile.y = 123;
+                    missile.x = 222;
+                    missile.direction = 333;
+                    callback = function() {};
+                    world.tick(callback);
+                });
 
-            it('should add a mesh with missile\'s direction', function() {
-                expect(addedMesh.rotation.z).toBe(3);
+                it('should update mesh\'s coordinates to missile\'s coordinates', function() {
+                    expect(mesh.position).toEqual(jasmine.objectContaining({ x: 222, y: 123 }));
+                });
+
+                it('should update mesh\'s direction to missile\'s direction', function() {
+                    expect(mesh.rotation.z).toEqual(333);
+                });
             });
         });
 
         describe('when add is called with a ship', function() {
-            var mesh;
             var ship;
             beforeEach(function() {
-                sceneSpy.add.and.callFake(function(m) {
-                    mesh = m;
-                });
-
-                ship = {};
+                ship = new Ship();
                 world.add(ship);
             });
 
-            it('should add a threeJs mesh to threeJs scene', function() {
+            it('should add a mesh to scene', function() {
                 expect(sceneSpy.add).toHaveBeenCalledWith(jasmine.any(THREE.Mesh));
             });
 
@@ -113,34 +178,21 @@ describe('ThreeJsWorld', function() {
                 });
             });
 
-            describe('when tick is called with a callback', function() {
+            describe('when the world ticks', function() {
                 var callback;
                 beforeEach(function() {
                     ship.y = 123;
                     ship.x = 222;
                     ship.direction = 333;
-                    rendererSpy.render.calls.reset();
-                    callback = jasmine.createSpy('tickCallback');
+                    callback = function() {};
                     world.tick(callback);
                 });
 
-                it('should wait', function() {
-                    expect(waitSpy).toHaveBeenCalled();
-                });
-
-                it('should call the callback', function() {
-                    expect(callback).toHaveBeenCalled();
-                });
-
-                it('should call renderer with scene and camera', function() {
-                    expect(rendererSpy.render).toHaveBeenCalledWith(sceneSpy, cameraSpy);
-                });
-
-                it('should update ship\'s mesh\'s coordinates to ship\'s coordinates', function() {
+                it('should update mesh\'s coordinates to ship\'s coordinates', function() {
                     expect(mesh.position).toEqual(jasmine.objectContaining({ x: 222, y: 123 }));
                 });
 
-                it('should update ship\'s mesh\'s direction to ship\'s direction', function() {
+                it('should update mesh\'s direction to ship\'s direction', function() {
                     expect(mesh.rotation.z).toEqual(333);
                 });
             });

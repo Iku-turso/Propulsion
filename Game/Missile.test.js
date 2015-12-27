@@ -65,7 +65,7 @@ describe('when MissileFactory creates a missile for a ship in origo, pointing ri
     var gameObjects;
     beforeEach(function() {
         ship = { x: 0, y: 0, direction: 0 };
-        worldSpy = new jasmine.createSpyObj('worldSpy', ['addMissile']);
+        worldSpy = new jasmine.createSpyObj('worldSpy', ['add']);
         physicsSpy = new jasmine.createSpyObj('physicsSpy', ['add']);
         locateSpy = jasmine.createSpy('locateSpy').and.returnValue(new Missile());
         gameObjects = [];
@@ -92,7 +92,7 @@ describe('when MissileFactory creates a missile for a ship in origo, pointing ri
     });
 
     it('should add missile to world', function() {
-        expect(worldSpy.addMissile).toHaveBeenCalledWith(missile);
+        expect(worldSpy.add).toHaveBeenCalledWith(missile);
     });
 
     it('should add missile to physics', function() {

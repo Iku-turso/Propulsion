@@ -30,7 +30,7 @@ MissileFactory = function(world, physics, locate, gameObjects) {
         missile.xVelocity = ship.xVelocity;
         missile.yVelocity = ship.yVelocity;
         missile.direction = ship.direction;
-        world.addMissile(missile);
+        world.add(missile);
         physics.add(missile);
         gameObjects.push(missile);
         return missile;
