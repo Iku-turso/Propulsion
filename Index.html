@@ -103,18 +103,34 @@
     });
 
     var initialTouch = null;
+    var shooting = function(touch) {
+        return touch.pageX > window.innerWidth / 2;
+    }
+
     window.addEventListener('touchstart', function(event) {
         var touch = event.changedTouches[0];
-        initialTouch = initialTouch || { x: touch.pageX, y: touch.pageY };
+        if (shooting(touch)) {
+            ship1.shoot();
+        } else {
+            initialTouch = initialTouch || { x: touch.pageX, y: touch.pageY };
+        }
     }, false);
 
-    var touchTreshold = 20;
+    var overTreshold = function(amount) {
+        var treshold = 20;
+        return Math.abs(amount) > treshold;
+    }
+    
     window.addEventListener('touchmove', function(event) {
         event.preventDefault();
         var touch = event.changedTouches[0];
+        if (shooting(touch) || !initialTouch) {
+            return;
+        }
+
         var vector = { x: touch.pageX - initialTouch.x, y: touch.pageY - initialTouch.y };
         
-        if (Math.abs(vector.x) > touchTreshold) {
+        if (overTreshold(vector.x)) {
             if (vector.x > 0) {
                 ship1.startSteerRight();
             } else {
@@ -122,7 +138,7 @@
             }
         }
 
-        if (Math.abs(vector.y) > touchTreshold) {
+        if (overTreshold(vector.y)) {
             if (vector.y < 0) {
                 ship1.startBoost();
             } else {
