@@ -73,6 +73,7 @@
     <Content Include="Game\Game.test.js" />
     <Content Include="Game\Ship.js" />
     <Content Include="Index.html" />
+    <Content Include="Index.js" />
     <Content Include="Scripts\di4js.js" />
     <Content Include="Scripts\di4js.min.js" />
     <Content Include="Scripts\three.js" />
