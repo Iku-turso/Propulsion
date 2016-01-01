@@ -23,6 +23,7 @@
         turn = 1;
     };
 
+    // Todo: stopSteer is enough.
     self.stopSteerLeft = function() {
         turn = 0;
     };

@@ -102,6 +102,43 @@
         }
     });
 
+    var initialTouch = null;
+    window.addEventListener('touchstart', function(event) {
+        var touch = event.changedTouches[0];
+        initialTouch = initialTouch || { x: touch.pageX, y: touch.pageY };
+    }, false);
+
+    var touchTreshold = 20;
+    window.addEventListener('touchmove', function(event) {
+        event.preventDefault();
+        var touch = event.changedTouches[0];
+        var vector = { x: touch.pageX - initialTouch.x, y: touch.pageY - initialTouch.y };
+        
+        if (Math.abs(vector.x) > touchTreshold) {
+            if (vector.x > 0) {
+                ship1.startSteerRight();
+            } else {
+                ship1.startSteerLeft();
+            }
+        }
+
+        if (Math.abs(vector.y) > touchTreshold) {
+            if (vector.y < 0) {
+                ship1.startBoost();
+            } else {
+                ship1.stopBoost();
+            }
+        }
+    }, false);
+
+    var onTouchEnd = function() {
+        initialTouch = null;
+        ship1.stopBoost();
+        ship1.stopSteerLeft();
+        ship1.stopSteerRight();
+    };
+    window.addEventListener('touchend', onTouchEnd, false);
+    window.addEventListener('touchcancel', onTouchEnd, false);
 </script>
 </body>
 </html>
