@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Iku-turso/Propulsion/issues"
   },
-  "homepage": "https://github.com/Iku-turso/Propulsion#readme"
+  "homepage": "https://github.com/Iku-turso/Propulsion#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
 }
