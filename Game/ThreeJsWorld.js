@@ -4,6 +4,13 @@
 
     self.init = function() {
         scene.add(camera);
+
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        scene.add(directionalLight);
+
+        var ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+
         container.appendChild(renderer.domElement);
     };
 
@@ -12,21 +19,20 @@
         if (obj instanceof Ship) {
             ship = obj;
             var geometry = new THREE.CylinderGeometry(0, .5, 1);
-            for (var i = 0; i < geometry.faces.length; i += 2) {
-                var hex = Math.random() * 0xffffff;
-                geometry.faces[i].color.setHex(hex);
-                geometry.faces[i + 1].color.setHex(hex);
-            }
-            var shipMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
-
+            var shipMaterial = new THREE.MeshLambertMaterial();
             var shipMesh = new THREE.Mesh(geometry, shipMaterial);
+            shipMesh.position.x = obj.x;
+            shipMesh.position.y = obj.y;
+            // Todo: why the offset?
+            shipMesh.rotation.z = obj.direction - Math.PI / 2;
+
             scene.add(shipMesh);
             meshesAndObjects.push({ mesh: shipMesh, object: ship });
         }
 
         if (obj instanceof Missile) {
             var missileGeometry = new THREE.BoxGeometry(0.1, 0.3, 0.1);
-            var missileMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+            var missileMaterial = new THREE.MeshLambertMaterial();
             var missileMesh = new THREE.Mesh(missileGeometry, missileMaterial);
             missileMesh.position.x = obj.x;
             missileMesh.position.y = obj.y;
