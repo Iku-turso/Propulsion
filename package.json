@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Iku-turso/Propulsion#readme",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "express-ws": "^1.0.0-rc.2"
   }
 }
