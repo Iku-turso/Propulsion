@@ -57,7 +57,7 @@ di.register('missileFactory')
     .param().ref('locate')
     .param().ref('gameObjects');
 
-di.register('socket').instance(new WebSocket('ws://localhost:3000'));
+di.register('socket').instance(new WebSocket(location.origin.replace(/^http/, 'ws')));
 
 di.register('server')
     .as(Server)

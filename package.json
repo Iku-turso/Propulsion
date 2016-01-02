@@ -19,5 +19,8 @@
   "dependencies": {
     "express": "^4.13.3",
     "express-ws": "^1.0.0-rc.2"
-  }
+  },
+  "engines": {
+    "node": "0.12.2"
+  }  
 }

@@ -20,4 +20,4 @@ app.ws('/', function(ws, req) {
     });
 });
 
-var server = app.listen(3000);
+var server = app.listen(process.env.PORT);
