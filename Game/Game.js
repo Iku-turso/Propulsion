@@ -1,4 +1,4 @@
-﻿Game = function(shipFactory, world, physics, gameObjects) {
+﻿Game = function(shipFactory, world, physics, gameObjects, server) {
     var self = this;
 
     self.init = function() {
@@ -14,6 +14,10 @@
     self.start = function() {
         self.ships.push(shipFactory.create());
         self.ships.push(shipFactory.create());
+
+        server.message(function(message) {
+            self.ships[1].startBoost();
+        });
         
         world.tick(function() {
             // Todo: should gameObjects be an array or a class?

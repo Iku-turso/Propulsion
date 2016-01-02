@@ -4,11 +4,13 @@ describe('Ship', function() {
     var ship;
     var physicsSpy;
     var missileFactorySpy;
+    var serverSpy;
 
     beforeEach(function() {
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForwardForce', 'applyAngularForce']);
         missileFactorySpy = jasmine.createSpyObj('missileFactorySpy', ['create']);
-        ship = new Ship(physicsSpy, missileFactorySpy);
+        serverSpy = jasmine.createSpyObj('serverSpy', ['boost']);
+        ship = new Ship(physicsSpy, missileFactorySpy, serverSpy);
     });
 
     it('should have x-coordinate 0', function() {
@@ -96,5 +98,11 @@ describe('Ship', function() {
         ship.live();
 
         expect(physicsSpy.applyAngularForce).not.toHaveBeenCalled();
+    });
+
+    it('should tell server to boost when remoteBoost is called', function() {
+        ship.remoteBoost();
+
+        expect(serverSpy.boost).toHaveBeenCalledWith(ship);
     });
 });

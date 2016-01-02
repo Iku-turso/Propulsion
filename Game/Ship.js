@@ -1,4 +1,4 @@
-﻿Ship = function(physics, missileFactory) {
+﻿Ship = function(physics, missileFactory, server) {
     var self = this;
     self.x = 0;
     self.y = 0;
@@ -49,4 +49,8 @@
     self.shoot = function() {
         missileFactory.create(self);
     };
+
+    self.remoteBoost = function() {
+        server.boost(self);
+    }
 };

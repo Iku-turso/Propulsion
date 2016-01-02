@@ -10,12 +10,14 @@ describe('Game', function() {
     var tickCallback;
     var gameObjectASpy;
     var gameObjectBSpy;
+    var serverMessageCallback;
+    var serverSpy;
 
     beforeEach(function() {
         ship1Spy = jasmine.createSpyObj('ship1Spy', ['accelerate', 'burn', 'steerLeft', 'steerRight', 'shoot']);
         ship2Spy = jasmine.createSpyObj('ship2Spy', ['startBoost', 'stopBoost', 'startSteerLeft', 'stopSteerLeft', 'startSteerRight', 'stopSteerRight', 'shoot']);
         shipFactorySpy = jasmine.createSpyObj('shipFactorySpy', ['create']);
-        
+
         var alreadyCalled = false;
         shipFactorySpy.create.and.callFake(function() {
             if (alreadyCalled) return ship2Spy;
@@ -34,7 +36,12 @@ describe('Game', function() {
         gameObjectBSpy = jasmine.createSpyObj('gameObjectBSpy', ['live']);
         var gameObjects = [gameObjectASpy, gameObjectBSpy];
 
-        game = new Game(shipFactorySpy, worldSpy, physicsSpy, gameObjects);
+        serverSpy = jasmine.createSpyObj('serverSpy', ['message']);
+        serverSpy.message.and.callFake(function(callback) {
+            serverMessageCallback = callback;
+        });
+
+        game = new Game(shipFactorySpy, worldSpy, physicsSpy, gameObjects, serverSpy);
     });
 
     describe('when init is called', function() {
@@ -82,6 +89,12 @@ describe('Game', function() {
                     expect(gameObjectASpy.live).toHaveBeenCalled();
                     expect(gameObjectBSpy.live).toHaveBeenCalled();
                 });
+            });
+
+            it('should move ship2 when told so by server', function() {
+                serverMessageCallback({ boost: true });
+
+                expect(ship2Spy.startBoost).toHaveBeenCalled();
             });
         });
     });
