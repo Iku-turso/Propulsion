@@ -114,7 +114,7 @@
         window.addEventListener('touchstart', function(event) {
             var touch = event.changedTouches[0];
             if (shooting(touch)) {
-                ship1.shoot();
+                ship1.remoteShoot();
             } else {
                 initialTouch = initialTouch || { x: touch.pageX, y: touch.pageY };
             }
@@ -163,16 +163,6 @@
         };
         window.addEventListener('touchend', onTouchEnd, false);
         window.addEventListener('touchcancel', onTouchEnd, false);
-
-        //var socket = new WebSocket('ws://localhost:3000');
-
-        //socket.onopen = function() {
-        //    socket.send('Haha');
-        //};
-
-        //socket.onmessage = function(event) {
-        //    console.log(event.data);
-        //};
     })();
 </script>
 </body>

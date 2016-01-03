@@ -10,12 +10,15 @@ app.use('/Game', express.static('Game'));
 app.use('/Scripts', express.static('Scripts'));
 
 app.ws('/', function(ws, req) {
-    ws.on('message', function(msg) {
-        console.log(msg);
+    ws.on('message', function(messageString) {
+        var message = JSON.parse(messageString);
         // Todo: this should be in outer scope?
         var wss = expressWs.getWss('/');
+        var response = { shipId: message.shipId, type: message.type };
+        var responseString = JSON.stringify(response);
+        console.log(responseString);
         wss.clients.forEach(function(client) {
-            client.send('Boost!');
+            client.send(responseString);
         });
     });
 });

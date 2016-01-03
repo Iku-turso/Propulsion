@@ -26,6 +26,13 @@ describe('Server', function() {
         var ship = { id: 123 };
         server.boost(ship);
 
-        expect(socketSpy.send).toHaveBeenCalledWith({ boost: 123 });
+        expect(socketSpy.send).toHaveBeenCalledWith(JSON.stringify({ type: 'boost', shipId: 123 }));
+    });
+
+    it('shoot should send a message for ship through socket', function() {
+        var ship = { id: 123 };
+        server.shoot(ship);
+
+        expect(socketSpy.send).toHaveBeenCalledWith(JSON.stringify({ type: 'shoot', shipId: 123 }));
     });
 });

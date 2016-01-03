@@ -5,6 +5,10 @@
     }
 
     self.boost = function(ship) {
-        socket.send({ boost: ship.id });
+        socket.send(JSON.stringify({ type: 'boost', shipId: ship.id }));
+    }
+
+    self.shoot = function(ship) {
+        socket.send(JSON.stringify({ type: 'shoot', shipId: ship.id }));
     }
 };

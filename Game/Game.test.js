@@ -92,9 +92,14 @@ describe('Game', function() {
             });
 
             it('should move ship2 when told so by server', function() {
-                serverMessageCallback({ boost: true });
+                serverMessageCallback({ data: '{"type":"boost","shipId":123}' });
 
                 expect(ship2Spy.startBoost).toHaveBeenCalled();
+            });
+
+            it('should shoot ship1 when told so by server', function() {
+                serverMessageCallback({ data: '{"type":"shoot","shipId":123}' });
+                expect(ship1Spy.shoot).toHaveBeenCalled();
             });
         });
     });

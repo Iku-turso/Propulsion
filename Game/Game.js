@@ -15,8 +15,16 @@
         self.ships.push(shipFactory.create());
         self.ships.push(shipFactory.create());
 
-        server.message(function(message) {
-            self.ships[1].startBoost();
+        server.message(function(msg) {
+            var message = JSON.parse(msg.data);
+
+            if (message.type === 'boost') {
+                self.ships[1].startBoost();
+            }
+
+            if (message.type === 'shoot') {
+                self.ships[0].shoot();
+            }
         });
         
         world.tick(function() {

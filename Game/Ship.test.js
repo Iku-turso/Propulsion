@@ -9,7 +9,7 @@ describe('Ship', function() {
     beforeEach(function() {
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForwardForce', 'applyAngularForce']);
         missileFactorySpy = jasmine.createSpyObj('missileFactorySpy', ['create']);
-        serverSpy = jasmine.createSpyObj('serverSpy', ['boost']);
+        serverSpy = jasmine.createSpyObj('serverSpy', ['boost', 'shoot']);
         ship = new Ship(physicsSpy, missileFactorySpy, serverSpy);
     });
 
@@ -104,5 +104,11 @@ describe('Ship', function() {
         ship.remoteBoost();
 
         expect(serverSpy.boost).toHaveBeenCalledWith(ship);
+    });
+
+    it('should tell server to shoot when remoteShoot is called', function() {
+        ship.remoteShoot();
+
+        expect(serverSpy.shoot).toHaveBeenCalledWith(ship);
     });
 });

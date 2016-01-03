@@ -53,4 +53,8 @@
     self.remoteBoost = function() {
         server.boost(self);
     }
+
+    self.remoteShoot = function() {
+        server.shoot(self);
+    }
 };
