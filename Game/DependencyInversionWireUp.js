@@ -81,6 +81,10 @@ di.register('shipFactory')
     .param().ref('locate')
     .param().ref('gameObjects');
 
+di.register('idFactory')
+    .as(IdFactory)
+    .asSingleton();
+
 di.register('game')
     .as(Game)
     .asSingleton()
@@ -89,4 +93,5 @@ di.register('game')
     .param().ref('world')
     .param().ref('physics')
     .param().ref('gameObjects')
-    .param().ref('server');
+    .param().ref('server')
+    .param().ref('idFactory');

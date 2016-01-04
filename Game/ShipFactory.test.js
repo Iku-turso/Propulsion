@@ -14,7 +14,7 @@ describe('ShipFactory when ship is created', function() {
         locateSpy = jasmine.createSpy('locateSpy').and.returnValue(new Ship());
         gameObjects = [];
         factory = new ShipFactory(worldSpy, physicsSpy, locateSpy, gameObjects);
-        ship = factory.create();
+        ship = factory.create(123);
     });
 
     it('should create ship using serviceLocator', function() {
@@ -35,5 +35,9 @@ describe('ShipFactory when ship is created', function() {
 
     it('should push ship to gameObjects', function() {
         expect(gameObjects).toEqual([ship]);
+    });
+
+    it('should create a ship with given id', function() {
+        expect(ship.id).toBe(123);
     });
 });

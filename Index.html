@@ -27,6 +27,7 @@
 <script src="Game/MissileFactory.js"></script>
 <script src="Game/SimplePhysics.js"></script>
 <script src="Game/Server.js"></script>
+<script src="Game/IdFactory.js"></script>
 <script src="Game/DependencyInversionWireUp.js"></script>
 <script>
     (function() {
@@ -43,8 +44,6 @@
 
         game.start();
 
-        var ship1 = game.ships[0];
-        var ship2 = game.ships[1];
         var pressed = {};
         window.addEventListener('keydown', function(event) {
             if (pressed[event.keyCode]) {
@@ -54,31 +53,16 @@
 
             switch (event.keyCode) {
             case 38:
-                ship1.startBoost();
+                game.remoteStartBoost();
                 break;
             case 37:
-                ship1.startSteerLeft();
+                game.remoteSteerLeft();
                 break;
             case 39:
-                ship1.startSteerRight();
+                game.remoteSteerRight();
                 break;
             case 32:
-                ship1.shoot();
-                break;
-            case 87:
-                ship2.startBoost();
-                break;
-            case 65:
-                ship2.startSteerLeft();
-                break;
-            case 68:
-                ship2.startSteerRight();
-                break;
-            case 17:
-                ship2.shoot();
-                break;
-            case 83:
-                ship2.remoteBoost();
+                game.remoteShoot();
                 break;
             }
         });
@@ -87,22 +71,10 @@
             pressed[event.keyCode] = false;
             switch (event.keyCode) {
             case 38:
-                ship1.stopBoost();
+                game.remoteStopBoost();
                 break;
-            case 37:
-                ship1.stopSteerLeft();
-                break;
-            case 39:
-                ship1.stopSteerRight();
-                break;
-            case 87:
-                ship2.stopBoost();
-                break;
-            case 65:
-                ship2.stopSteerLeft();
-                break;
-            case 68:
-                ship2.stopSteerRight();
+            case 37: case 39:
+                game.remoteStopSteer();
                 break;
             }
         });
@@ -114,7 +86,7 @@
         window.addEventListener('touchstart', function(event) {
             var touch = event.changedTouches[0];
             if (shooting(touch)) {
-                ship1.remoteShoot();
+                game.remoteShoot();
             } else {
                 initialTouch = initialTouch || { x: touch.pageX, y: touch.pageY };
             }
@@ -136,17 +108,17 @@
 
             if (overTreshold(vector.x)) {
                 if (vector.x > 0) {
-                    ship1.startSteerRight();
+                    game.remoteSteerRight();
                 } else {
-                    ship1.startSteerLeft();
+                    game.remoteSteerLeft();
                 }
             }
 
             if (overTreshold(vector.y)) {
                 if (vector.y < 0) {
-                    ship1.startBoost();
+                    game.remoteStartBoost();
                 } else {
-                    ship1.stopBoost();
+                    game.remoteStopBoost();
                 }
             }
         }, false);
@@ -156,9 +128,8 @@
             var touch = event.changedTouches[0];
             if (!shooting(touch)) {
                 initialTouch = null;
-                ship1.stopBoost();
-                ship1.stopSteerLeft();
-                ship1.stopSteerRight();
+                game.remoteStopBoost();
+                game.remoteStopSteer();
             }
         };
         window.addEventListener('touchend', onTouchEnd, false);

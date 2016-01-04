@@ -71,30 +71,30 @@ describe('Ship', function() {
     });
 
     it('should apply angular force to left when steering left and the world ticks', function() {
-        ship.startSteerLeft();
+        ship.steerLeft();
         ship.live();
 
         expect(physicsSpy.applyAngularForce).toHaveBeenCalledWith(ship, 1);
     });
 
     it('should not apply force when steering left has stopped before the world ticks', function() {
-        ship.startSteerLeft();
-        ship.stopSteerLeft();
+        ship.steerLeft();
+        ship.stopSteer();
         ship.live();
 
         expect(physicsSpy.applyAngularForce).not.toHaveBeenCalled();
     });
 
     it('should apply angular force to right when steering right and the world ticks', function() {
-        ship.startSteerRight();
+        ship.steerRight();
         ship.live();
 
         expect(physicsSpy.applyAngularForce).toHaveBeenCalledWith(ship, -1);
     });
 
     it('should not apply force when steering right has stopped before the world ticks', function() {
-        ship.startSteerRight();
-        ship.stopSteerRight();
+        ship.steerRight();
+        ship.stopSteer();
         ship.live();
 
         expect(physicsSpy.applyAngularForce).not.toHaveBeenCalled();

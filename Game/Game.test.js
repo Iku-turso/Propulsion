@@ -2,8 +2,7 @@
 
 describe('Game', function() {
     var shipFactorySpy;
-    var ship1Spy;
-    var ship2Spy;
+    var shipSpy;
     var worldSpy;
     var physicsSpy;
     var game;
@@ -12,18 +11,13 @@ describe('Game', function() {
     var gameObjectBSpy;
     var serverMessageCallback;
     var serverSpy;
+    var onConnectionCallback;
+    var idFactorySpy;
 
     beforeEach(function() {
-        ship1Spy = jasmine.createSpyObj('ship1Spy', ['accelerate', 'burn', 'steerLeft', 'steerRight', 'shoot']);
-        ship2Spy = jasmine.createSpyObj('ship2Spy', ['startBoost', 'stopBoost', 'startSteerLeft', 'stopSteerLeft', 'startSteerRight', 'stopSteerRight', 'shoot']);
+        shipSpy = jasmine.createSpyObj('shipSpy', ['shoot', 'startBoost', 'stopBoost', 'steerLeft', 'steerRight', 'stopSteer']);
         shipFactorySpy = jasmine.createSpyObj('shipFactorySpy', ['create']);
-
-        var alreadyCalled = false;
-        shipFactorySpy.create.and.callFake(function() {
-            if (alreadyCalled) return ship2Spy;
-            alreadyCalled = true;
-            return ship1Spy;
-        });
+        shipFactorySpy.create.and.returnValue(shipSpy);
 
         worldSpy = jasmine.createSpyObj('worldSpy', ['init', 'render', 'setCanvas', 'tick']);
         worldSpy.tick.and.callFake(function(callback) {
@@ -36,12 +30,19 @@ describe('Game', function() {
         gameObjectBSpy = jasmine.createSpyObj('gameObjectBSpy', ['live']);
         var gameObjects = [gameObjectASpy, gameObjectBSpy];
 
-        serverSpy = jasmine.createSpyObj('serverSpy', ['message']);
+        serverSpy = jasmine.createSpyObj('serverSpy', ['message', 'createShip', 'shoot', 'startBoost', 'stopBoost', 'steerLeft', 'steerRight', 'stopSteer']);
         serverSpy.message.and.callFake(function(callback) {
             serverMessageCallback = callback;
         });
 
-        game = new Game(shipFactorySpy, worldSpy, physicsSpy, gameObjects, serverSpy);
+        serverSpy.onConnect = function(callback) {
+            onConnectionCallback = callback;
+        };
+
+        idFactorySpy = jasmine.createSpyObj('idFactorySpy', ['create']);
+        idFactorySpy.create.and.returnValue(111);
+
+        game = new Game(shipFactorySpy, worldSpy, physicsSpy, gameObjects, serverSpy, idFactorySpy);
     });
 
     describe('when init is called', function() {
@@ -64,21 +65,9 @@ describe('Game', function() {
                 game.start();
             });
 
-            it('should create two ships', function() {
-                expect(shipFactorySpy.create.calls.count()).toEqual(2);
-            });
-
-            it('game should have two ships from shipFactory', function() {
-                expect(game.ships).toEqual([ship1Spy, ship2Spy]);
-            });
-
             describe('when tickCallback is called', function() {
                 beforeEach(function() {
                     tickCallback();
-                });
-
-                it('should not burn', function() {
-                    expect(ship1Spy.burn).not.toHaveBeenCalled();
                 });
 
                 it('should apply physics', function() {
@@ -91,15 +80,96 @@ describe('Game', function() {
                 });
             });
 
-            it('should move ship2 when told so by server', function() {
-                serverMessageCallback({ data: '{"type":"boost","shipId":123}' });
+            it('should tell server to shoot with id unique to player when remoteShoot is called ', function() {
+                game.remoteShoot();
 
-                expect(ship2Spy.startBoost).toHaveBeenCalled();
+                expect(serverSpy.shoot).toHaveBeenCalledWith(111);
             });
 
-            it('should shoot ship1 when told so by server', function() {
-                serverMessageCallback({ data: '{"type":"shoot","shipId":123}' });
-                expect(ship1Spy.shoot).toHaveBeenCalled();
+            it('should tell server to boost with id unique to player when remoteBoost is called ', function() {
+                game.remoteStartBoost();
+
+                expect(serverSpy.startBoost).toHaveBeenCalledWith(111);
+            });
+
+            it('should tell server to stop boost with id unique to player when remoteBoost is called ', function() {
+                game.remoteStopBoost();
+
+                expect(serverSpy.stopBoost).toHaveBeenCalledWith(111);
+            });
+
+            it('should tell server to steer left with id unique to player when remoteSteerLeft is called ', function() {
+                game.remoteSteerLeft();
+
+                expect(serverSpy.steerLeft).toHaveBeenCalledWith(111);
+            });
+
+            it('should tell server to steer right with id unique to player when remoteSteerRight is called ', function() {
+                game.remoteSteerRight();
+
+                expect(serverSpy.steerRight).toHaveBeenCalledWith(111);
+            });
+
+            it('should tell server to stop steering with id unique to player when remoteStopSteer is called ', function() {
+                game.remoteStopSteer();
+
+                expect(serverSpy.stopSteer).toHaveBeenCalledWith(111);
+            });
+
+            describe('when connection to server is established', function() {
+                beforeEach(function() {
+                    onConnectionCallback();
+                });
+
+                it('should tell server to create a ship with id unique to player', function() {
+                    expect(serverSpy.createShip).toHaveBeenCalledWith(111);
+                });
+            });
+
+            describe('when server messages to create a ship with id 123', function() {
+                beforeEach(function() {
+                    serverMessageCallback({ data: '{"type":"createShip","shipId":123}' });
+                });
+
+                it('should create a ship with id from server', function() {
+                    expect(shipFactorySpy.create).toHaveBeenCalledWith(123);
+                });
+
+                it('should make the ship shoot when server messages', function() {
+                    serverMessageCallback({ data: '{"type":"shoot","shipId":123}' });
+
+                    expect(shipSpy.shoot).toHaveBeenCalled();
+                });
+
+                it('should make the ship boost when server messages', function() {
+                    serverMessageCallback({ data: '{"type":"startBoost","shipId":123}' });
+
+                    expect(shipSpy.startBoost).toHaveBeenCalled();
+                });
+
+                it('should make the ship stop boosting when server messages', function() {
+                    serverMessageCallback({ data: '{"type":"stopBoost","shipId":123}' });
+
+                    expect(shipSpy.stopBoost).toHaveBeenCalled();
+                });
+
+                it('should make the ship steer left when server messages', function() {
+                    serverMessageCallback({ data: '{"type":"steerLeft","shipId":123}' });
+
+                    expect(shipSpy.steerLeft).toHaveBeenCalled();
+                });
+
+                it('should make the ship steer right when server messages', function() {
+                    serverMessageCallback({ data: '{"type":"steerRight","shipId":123}' });
+
+                    expect(shipSpy.steerRight).toHaveBeenCalled();
+                });
+
+                it('should make the ship stop steering when server messages', function() {
+                    serverMessageCallback({ data: '{"type":"stopSteer","shipId":123}' });
+
+                    expect(shipSpy.stopSteer).toHaveBeenCalled();
+                });
             });
         });
     });

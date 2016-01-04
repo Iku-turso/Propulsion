@@ -19,20 +19,15 @@
     };
 
     var turn = 0;
-    self.startSteerLeft = function() {
+    self.steerLeft = function() {
         turn = 1;
     };
 
-    // Todo: stopSteer is enough.
-    self.stopSteerLeft = function() {
-        turn = 0;
-    };
-
-    self.startSteerRight = function() {
+    self.steerRight = function() {
         turn = -1;
     };
 
-    self.stopSteerRight = function() {
+    self.stopSteer = function() {
         turn = 0;
     };
 
@@ -50,6 +45,7 @@
         missileFactory.create(self);
     };
 
+    // Todo: This is obsolete.
     self.remoteBoost = function() {
         server.boost(self);
     }

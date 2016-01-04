@@ -62,7 +62,10 @@
     <Content Include="Game\Missile.js" />
     <Content Include="Game\MissileFactory.test.js" />
     <Content Include="Game\Missile.test.js" />
+    <Content Include="Game\Server.js" />
+    <Content Include="Game\IdFactory.js" />
     <Content Include="Game\ShipFactory.js" />
+    <Content Include="Game\Server.test.js" />
     <Content Include="Game\ShipFactory.test.js" />
     <Content Include="Game\SimplePhysics.js" />
     <Content Include="Game\SimplePhysics.test.js" />
