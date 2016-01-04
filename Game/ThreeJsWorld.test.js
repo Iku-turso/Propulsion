@@ -128,8 +128,8 @@ describe('ThreeJsWorld', function() {
                     expect(mesh.rotation.z).toBe(3);
                 });
 
-                it('should be made of basic material', function() {
-                    expect(mesh.material).toEqual(jasmine.any(THREE.MeshBasicMaterial));
+                it('should be made of MeshLambertMaterial material', function() {
+                    expect(mesh.material).toEqual(jasmine.any(THREE.MeshLambertMaterial));
                 });
             });
 
@@ -173,8 +173,8 @@ describe('ThreeJsWorld', function() {
                     expect(mesh.position).toEqual(jasmine.objectContaining({ x: 0, y: 0, z: 0 }));
                 });
 
-                it('should be made of basic material', function() {
-                    expect(mesh.material).toEqual(jasmine.any(THREE.MeshBasicMaterial));
+                it('should be made of MeshLambertMaterial material', function() {
+                    expect(mesh.material).toEqual(jasmine.any(THREE.MeshLambertMaterial));
                 });
             });
 
