@@ -4,3 +4,4 @@ bin/**
 Propulsion.v12.suo
 _ReSharper.Caches
 Game/_Chutzpah.*
+node_modules
