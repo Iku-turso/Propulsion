@@ -5,8 +5,10 @@
     var gameObjectASpy;
     var gameObjectBSpy;
     var gameObjects;
-    var clientSpy;
+    var broadcasterSpy;
     var serverGame;
+    // var shipSpy;
+    var shipFactorySpy;
     beforeEach(function() {
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['apply']);
 
@@ -17,10 +19,15 @@
         gameObjectASpy = jasmine.createSpyObj('gameObjectASpy', ['live']);
         gameObjectBSpy = jasmine.createSpyObj('gameObjectBSpy', ['live']);
         gameObjects = [gameObjectASpy, gameObjectBSpy];
-        
-        clientSpy = jasmine.createSpyObj('clientssSpy', ['broadcast']);
+
+        broadcasterSpy = jasmine.createSpyObj('broadcasterSpy', ['broadcast']);
+
+        // shipSpy = jasmine.createSpyObj('shipSpy', ['shoot', 'startBoost', 'stopBoost', 'steerLeft', 'steerRight', 'stopSteer']);
+        shipFactorySpy = jasmine.createSpyObj('shipFactorySpy', ['create']);
+        // shipFactorySpy.create.and.returnValue(shipSpy);
+
         var ServerGame = require('./ServerGame').ServerGame;
-        serverGame = new ServerGame(tickMock, physicsSpy, gameObjects, clientSpy);
+        serverGame = new ServerGame(tickMock, physicsSpy, gameObjects, broadcasterSpy, shipFactorySpy);
     });
 
     describe('when tick', function() {
@@ -38,7 +45,7 @@
         });
 
         it('should broadcast game state to clients', function() {
-            expect(clientSpy.broadcast).toHaveBeenCalled();
+            expect(broadcasterSpy.broadcast).toHaveBeenCalled();
         });
     });
 
@@ -47,8 +54,8 @@
             serverGame.createShip(123);
         });
 
-        it('should ', function() {
-            
+        it('should create ship using shipFactory', function() {
+            expect(shipFactorySpy.create).toHaveBeenCalledWith(123);
         });
     });
 });

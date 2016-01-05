@@ -46,6 +46,7 @@
         setInterval(callback, 1000);
     });
 
+    // Todo: this is a bit of a mess.
     di.register('express').instance(require('express'));
     di.register('expressApp').instance(di.resolve('express')());
     di.register('expressWs').instance(require('express-ws')(di.resolve('expressApp')));
@@ -66,5 +67,6 @@
         .param().ref('tick')
         .param().ref('physics')
         .param().ref('gameObjects')
-        .param().ref('broadcaster');
+        .param().ref('broadcaster')
+        .param().ref('shipFactory');
 }
