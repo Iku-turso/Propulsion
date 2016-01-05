@@ -9,3 +9,4 @@
         return ship;
     };
 };
+exports.ShipFactory = ShipFactory;

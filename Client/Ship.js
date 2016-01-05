@@ -45,3 +45,4 @@
         missileFactory.create(self);
     };
 };
+exports.Ship = Ship;

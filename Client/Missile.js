@@ -13,3 +13,4 @@
         physics.applyForwardForce(self, 0.1);
     };
 };
+exports.Missile = Missile;

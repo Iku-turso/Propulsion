@@ -6,7 +6,7 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/Index.html');
 });
 
-app.use('/Game', express.static('Game'));
+app.use('/Client', express.static('Client'));
 app.use('/Scripts', express.static('Scripts'));
 
 var wss = expressWs.getWss('/');
@@ -22,11 +22,10 @@ app.ws('/', function(ws, req) {
 var tick = function(callback) {
     setInterval(callback, 1000);
 };
-var SimplePhysics = new require('./Game/SimplePhysics').SimplePhysics;
-var physics = new SimplePhysics();
-var broadcaster = { broadcast: function() {} };
-var serverGame = require('./Server/ServerGame').ServerGame;
-var gameObjects = [];
-serverGame(tick, physics, gameObjects, broadcaster);
+
+require('./Server/ServerDependencyInversionWireUp').init();
+
+var di = require('di4js');
+var game = di.resolve('serverGame');
 
 var server = app.listen(process.env.PORT);

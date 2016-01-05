@@ -14,3 +14,4 @@
         return missile;
     };
 };
+exports.MissileFactory = MissileFactory;

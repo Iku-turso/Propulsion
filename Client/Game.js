@@ -1,12 +1,16 @@
 ﻿Game = function(shipFactory, world, physics, gameObjects, server, idFactory) {
     var self = this;
 
+    // Todo: merge with start.
     self.init = function() {
         world.init();
     };
+
+    // Todo: move to world.
     self.setCanvas = function() {
         world.setCanvas();
     };
+
     var shipId = idFactory.create();
     self.start = function() {
         server.onConnect(function() {

@@ -7,5 +7,7 @@
         physics.apply();
 
         broadcaster.broadcast();
+
+        console.log('Tick!');
     });
 };

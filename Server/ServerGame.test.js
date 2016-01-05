@@ -6,6 +6,7 @@
     var gameObjectBSpy;
     var gameObjects;
     var clientSpy;
+    var serverGame;
     beforeEach(function() {
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['apply']);
 
@@ -18,9 +19,8 @@
         gameObjects = [gameObjectASpy, gameObjectBSpy];
         
         clientSpy = jasmine.createSpyObj('clientssSpy', ['broadcast']);
-
         var ServerGame = require('./ServerGame').ServerGame;
-        ServerGame(tickMock, physicsSpy, gameObjects, clientSpy);
+        serverGame = new ServerGame(tickMock, physicsSpy, gameObjects, clientSpy);
     });
 
     describe('when tick', function() {
@@ -39,6 +39,16 @@
 
         it('should broadcast game state to clients', function() {
             expect(clientSpy.broadcast).toHaveBeenCalled();
+        });
+    });
+
+    describe('when ship is added with id 123', function() {
+        beforeEach(function() {
+            serverGame.createShip(123);
+        });
+
+        it('should ', function() {
+            
         });
     });
 });
