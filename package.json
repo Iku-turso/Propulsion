@@ -4,7 +4,7 @@
   "description": "A game",
   "main": "Index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jasmine-node Server --matchall"
   },
   "repository": {
     "type": "git",
@@ -18,9 +18,10 @@
   "homepage": "https://github.com/Iku-turso/Propulsion#readme",
   "dependencies": {
     "express": "^4.13.3",
-    "express-ws": "^1.0.0-rc.2"
+    "express-ws": "^1.0.0-rc.2",
+    "jasmine-node": "^1.14.5"
   },
   "engines": {
     "node": "0.12.2"
-  }  
+  }
 }
