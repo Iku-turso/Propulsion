@@ -99,16 +99,4 @@ describe('Ship', function() {
 
         expect(physicsSpy.applyAngularForce).not.toHaveBeenCalled();
     });
-
-    it('should tell server to boost when remoteBoost is called', function() {
-        ship.remoteBoost();
-
-        expect(serverSpy.boost).toHaveBeenCalledWith(ship);
-    });
-
-    it('should tell server to shoot when remoteShoot is called', function() {
-        ship.remoteShoot();
-
-        expect(serverSpy.shoot).toHaveBeenCalledWith(ship);
-    });
 });
