@@ -46,8 +46,18 @@
         setInterval(callback, 1000);
     });
 
-    // Todo: implement.
-    di.register('broadcaster').instance({ broadcast: function() {} });
+    di.register('express').instance(require('express'));
+    di.register('expressApp').instance(di.resolve('express')());
+    di.register('expressWs').instance(require('express-ws')(di.resolve('expressApp')));
+
+    di.register('webSocket').instance(di.resolve('expressWs').getWss('/'));
+
+    di.register('broadcaster')
+        .as(new require('./Broadcaster').Broadcaster)
+        .asSingleton()
+        .withConstructor()
+        .param().ref('webSocket')
+        .param().ref('gameObjects');
 
     di.register('serverGame')
         .as(new require('./ServerGame').ServerGame)

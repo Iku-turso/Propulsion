@@ -2,8 +2,9 @@
     var self = this;
 
     self.broadcast = function() {
+        var message = JSON.stringify({ type: 'gameObjects', gameObjects: gameObjects });
         webSocket.clients.forEach(function(client) {
-            client.send(gameObjects);
+            client.send(message);
         });
     }
 }

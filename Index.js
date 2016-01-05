@@ -1,6 +1,10 @@
-﻿var express = require('express');
-var app = express();
-var expressWs = require('express-ws')(app);
+﻿require('./Server/ServerDependencyInversionWireUp').init();
+var di = require('di4js');
+
+// Todo: this is bit of a mess.
+var express = di.resolve('express');
+var app = di.resolve('expressApp');
+var expressWs = di.resolve('expressWs');
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/Index.html');
@@ -19,13 +23,6 @@ app.ws('/', function(ws, req) {
     });
 });
 
-var tick = function(callback) {
-    setInterval(callback, 1000);
-};
-
-require('./Server/ServerDependencyInversionWireUp').init();
-
-var di = require('di4js');
 var game = di.resolve('serverGame');
 
 var server = app.listen(process.env.PORT);

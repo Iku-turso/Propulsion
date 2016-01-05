@@ -18,7 +18,8 @@
     it('broadcast should send gameState to all clients', function() {
         broadcaster.broadcast();
 
-        expect(client1Spy.send).toHaveBeenCalledWith(gameObjects);
-        expect(client2Spy.send).toHaveBeenCalledWith(gameObjects);
+        var expectedBroadcast = '{"type":"gameObjects","gameObjects":[]}';
+        expect(client1Spy.send).toHaveBeenCalledWith(expectedBroadcast);
+        expect(client2Spy.send).toHaveBeenCalledWith(expectedBroadcast);
     });
 });
