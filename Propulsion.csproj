@@ -58,6 +58,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game\DependencyInversionWireUp.js" />
+    <Content Include="Server\Broadcaster.js" />
+    <Content Include="Server\Broadcaster.test.js" />
+    <Content Include="Server\ServerGame.test.js" />
+    <Content Include="Server\ServerGame.js" />
     <Content Include="Game\MissileFactory.js" />
     <Content Include="Game\Missile.js" />
     <Content Include="Game\MissileFactory.test.js" />

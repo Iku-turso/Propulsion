@@ -32,3 +32,4 @@
         });
     };
 }
+exports.SimplePhysics = SimplePhysics;
