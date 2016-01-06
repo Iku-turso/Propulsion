@@ -53,6 +53,19 @@
         });
     });
 
+    it('should prune gameObjects that are too far from origo', function() {
+        gameObjects[1] = { x: 1000 };
+        gameObjects[2] = { y: 1000 };
+        gameObjects[3] = { x: -1000 };
+        gameObjects[4] = { y: -1000 };
+        tickCallback();
+
+        expect(gameObjects[1]).not.toBeDefined();
+        expect(gameObjects[2]).not.toBeDefined();
+        expect(gameObjects[3]).not.toBeDefined();
+        expect(gameObjects[4]).not.toBeDefined();
+    });
+
     describe('when ship is created with id 123', function() {
         beforeEach(function() {
             serverGame.createShip(123);
