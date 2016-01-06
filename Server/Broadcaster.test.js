@@ -15,11 +15,14 @@
         broadcaster = new Broadcaster(webSocketMock, gameObjects);
     });
 
-    it('broadcast should send gameObjects to all clients', function() {
+    it('broadcast should send gameObjects to all clients that have readyState 1', function() {
+        client1Spy.readyState = 1;
+        client2Spy.readyState = 2;
+        
         broadcaster.broadcast();
 
         var expectedBroadcast = '{"type":"gameObjects","gameObjects":{}}';
         expect(client1Spy.send).toHaveBeenCalledWith(expectedBroadcast);
-        expect(client2Spy.send).toHaveBeenCalledWith(expectedBroadcast);
+        expect(client2Spy.send).not.toHaveBeenCalledWith(expectedBroadcast);
     });
 });
