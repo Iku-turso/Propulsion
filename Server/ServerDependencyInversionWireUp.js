@@ -43,7 +43,7 @@
         .param().ref('gameObjects');
 
     di.register('tick').instance(function(callback) {
-        setInterval(callback, 1000);
+        setInterval(callback, 1000 / 60);
     });
 
     // Todo: this is a bit of a mess.

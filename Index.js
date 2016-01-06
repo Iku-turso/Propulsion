@@ -23,10 +23,28 @@ app.ws('/', function(ws, req) {
         if (message.type === 'createShip') {
             game.createShip(message.shipId);
         }
+
+        if (message.type === 'steerLeft') {
+            game.steerLeft(message.shipId);
+        }
+
+        if (message.type === 'steerRight') {
+            game.steerRight(message.shipId);
+        }
+
+        if (message.type === 'stopSteer') {
+            game.stopSteer(message.shipId);
+        }
+
+        if (message.type === 'startBoost') {
+            game.startBoost(message.shipId);
+        }
+
+        if (message.type === 'stopBoost') {
+            game.stopBoost(message.shipId);
+        }
+
         console.log(messageString);
-        wss.clients.forEach(function(client) {
-            client.send(messageString);
-        });
     });
 });
 

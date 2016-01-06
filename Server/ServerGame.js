@@ -15,4 +15,23 @@
     self.createShip = function(id) {
         shipFactory.create(id);
     }
+    self.steerLeft = function(id) {
+        gameObjects[id].steerLeft();
+    }
+
+    self.steerRight = function(id) {
+        gameObjects[id].steerRight();
+    }
+
+    self.stopSteer = function(id) {
+        gameObjects[id].stopSteer();
+    }
+
+    self.startBoost = function(id) {
+        gameObjects[id].startBoost();
+    }
+
+    self.stopBoost = function(id) {
+        gameObjects[id].stopBoost();
+    }
 };
