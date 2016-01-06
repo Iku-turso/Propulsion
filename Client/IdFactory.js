@@ -4,3 +4,4 @@
         return Math.random();
     };
 };
+exports.IdFactory = IdFactory;

@@ -1,4 +1,4 @@
-﻿Game = function(shipFactory, world, physics, gameObjects, server, idFactory) {
+﻿Game = function(shipFactory, world, physics, gameObjects, server, idFactory, missileFactory) {
     var self = this;
 
     // Todo: merge with start.
@@ -51,12 +51,23 @@
 
             if (message.type === 'gameObjects') {
                 Object.keys(message.gameObjects).forEach(function(stringId) {
+                    var messageGameObject = message.gameObjects[stringId];
                     var id = parseFloat(stringId);
-                    var gameObject = message.gameObjects[id];
-                    var ship = gameObjects[id] || shipFactory.create(id);
-                    ship.x = gameObject.x;
-                    ship.y = gameObject.y;
-                    ship.direction = gameObject.direction;
+                    var gameObject = gameObjects[id];
+
+                    if (!gameObject) {
+                        if (messageGameObject.type === 'ship') {
+                            gameObject = shipFactory.create(id);
+                        }
+                        
+                        if (messageGameObject.type === 'missile') {
+                            gameObject = missileFactory.create(id);
+                        }
+                    }
+
+                    gameObject.x = messageGameObject.x;
+                    gameObject.y = messageGameObject.y;
+                    gameObject.direction = messageGameObject.direction;
                 });
             }
         });

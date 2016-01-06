@@ -48,6 +48,10 @@ di.register('missile')
     .withConstructor()
     .param().ref('physics');
 
+di.register('idFactory')
+    .as(IdFactory)
+    .asSingleton();
+
 di.register('missileFactory')
     .as(MissileFactory)
     .asSingleton()
@@ -55,7 +59,8 @@ di.register('missileFactory')
     .param().ref('world')
     .param().ref('physics')
     .param().ref('locate')
-    .param().ref('gameObjects');
+    .param().ref('gameObjects')
+    .param().ref('idFactory');
 
 di.register('socket').instance(new WebSocket(location.origin.replace(/^http/, 'ws')));
 
@@ -80,10 +85,6 @@ di.register('shipFactory')
     .param().ref('locate')
     .param().ref('gameObjects');
 
-di.register('idFactory')
-    .as(IdFactory)
-    .asSingleton();
-
 di.register('game')
     .as(Game)
     .asSingleton()
@@ -93,4 +94,5 @@ di.register('game')
     .param().ref('physics')
     .param().ref('gameObjects')
     .param().ref('server')
-    .param().ref('idFactory');
+    .param().ref('idFactory')
+    .param().ref('missileFactory');

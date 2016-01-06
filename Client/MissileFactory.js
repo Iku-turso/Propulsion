@@ -1,14 +1,8 @@
-﻿MissileFactory = function(world, physics, locate, gameObjects, idFactory) {
+﻿MissileFactory = function(world, physics, locate, gameObjects) {
     var self = this;
 
-    self.create = function(ship) {
+    self.create = function(id) {
         var missile = locate('missile');
-        missile.x = ship.x;
-        missile.y = ship.y;
-        missile.xVelocity = ship.xVelocity;
-        missile.yVelocity = ship.yVelocity;
-        missile.direction = ship.direction;
-        var id = idFactory.create();
         missile.id = id;
         world.add(missile);
         physics.add(missile);

@@ -12,6 +12,8 @@ describe('Game', function() {
     var serverSpy;
     var onConnectionCallback;
     var idFactorySpy;
+    var missileMock;
+    var missileFactorySpy;
 
     beforeEach(function() {
         gameObjects = {};
@@ -22,6 +24,15 @@ describe('Game', function() {
             shipSpy.id = id;
             gameObjects[id] = shipSpy;
             return shipSpy;
+        });
+
+        missileMock = {};
+        missileFactorySpy = jasmine.createSpyObj('missileFactorySpy', ['create']);
+        missileFactorySpy.create.and.callFake(function(id) {
+            // Todo: this is mock of what the real missileFactory does. Could we use the real missilefactory here?
+            missileMock.id = id;
+            gameObjects[id] = missileMock;
+            return missileMock;
         });
 
         worldSpy = jasmine.createSpyObj('worldSpy', ['init', 'render', 'setCanvas', 'tick']);
@@ -43,7 +54,7 @@ describe('Game', function() {
         idFactorySpy = jasmine.createSpyObj('idFactorySpy', ['create']);
         idFactorySpy.create.and.returnValue(111);
 
-        game = new Game(shipFactorySpy, worldSpy, physicsSpy, gameObjects, serverSpy, idFactorySpy);
+        game = new Game(shipFactorySpy, worldSpy, physicsSpy, gameObjects, serverSpy, idFactorySpy, missileFactorySpy);
     });
 
     describe('when init is called', function() {
@@ -225,6 +236,54 @@ describe('Game', function() {
                     });
                 });
             });
+
+            describe('when server messages to update gameObjects with unknown missile and its data', function() {
+                beforeEach(function() {
+                    // Todo: the id is duplicate.
+                    serverMessageCallback({ data: '{"type":"gameObjects","gameObjects":{"123":{"type":"missile","id":123,"x":111,"y":222,"direction":333}}}' });
+                });
+
+                it('should call missileFactory with the unknown id', function() {
+                    // Todo: gameObjectFactory?
+                    expect(missileFactorySpy.create).toHaveBeenCalledWith(123);
+                });
+
+                it('should set the created missile\'s x to value from server', function() {
+                    expect(missileMock.x).toBe(111);
+                });
+
+                it('should set the created missile\'s y to value from server', function() {
+                    expect(missileMock.y).toBe(222);
+                });
+
+                it('should set the created missile\'s direction to value from server', function() {
+                    expect(missileMock.direction).toBe(333);
+                });
+
+                describe('when server again messages to update gameObjects with previously created missile and its changed data', function() {
+                    beforeEach(function() {
+                        missileFactorySpy.create.calls.reset();
+                        serverMessageCallback({ data: '{"type":"gameObjects","gameObjects":{"123":{"type":"missile","id":123,"x":1,"y":2,"direction":3}}}' });
+                    });
+
+                    it('should not call missileFactory', function() {
+                        expect(missileFactorySpy.create).not.toHaveBeenCalled();
+                    });
+
+                    it('should set the old missile\'s x to value from server', function() {
+                        expect(missileMock.x).toBe(1);
+                    });
+
+                    it('should set the old missile\'s y to value from server', function() {
+                        expect(missileMock.y).toBe(2);
+                    });
+
+                    it('should set the old missile\'s direction to value from server', function() {
+                        expect(missileMock.direction).toBe(3);
+                    });
+                });
+            });
+
         });
     });
 });

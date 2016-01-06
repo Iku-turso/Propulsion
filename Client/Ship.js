@@ -1,4 +1,4 @@
-﻿Ship = function(physics, missileFactory) {
+﻿Ship = function(physics, missileFactory, idFactory) {
     var self = this;
     self.x = 0;
     self.y = 0;
@@ -8,6 +8,7 @@
     self.angularVelocity = 0;
     self.mass = 1000;
     self.id = Math.random();
+    self.type = 'ship';
 
     var boosting = false;
     self.startBoost = function() {
@@ -42,7 +43,13 @@
     };
 
     self.shoot = function() {
-        missileFactory.create(self);
+        var id = idFactory.create();
+        var missile = missileFactory.create(id);
+        missile.x = self.x;
+        missile.y = self.y;
+        missile.xVelocity = self.xVelocity;
+        missile.yVelocity = self.yVelocity;
+        missile.direction = self.direction;
     };
 };
 exports.Ship = Ship;

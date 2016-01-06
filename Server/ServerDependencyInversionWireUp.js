@@ -1,6 +1,6 @@
 ﻿exports.init = function() {
     var di = require('di4js');
-    
+
     di.register('locate').instance(di.resolve);
 
     di.register('gameObjects').instance({});
@@ -18,6 +18,10 @@
         .withConstructor()
         .param().ref('physics');
 
+    di.register('idFactory')
+        .as(new require('../Client/IdFactory').IdFactory)
+        .asSingleton();
+
     di.register('missileFactory')
         .as(new require('../Client/MissileFactory').MissileFactory)
         .asSingleton()
@@ -25,13 +29,15 @@
         .param().ref('world')
         .param().ref('physics')
         .param().ref('locate')
-        .param().ref('gameObjects');
+        .param().ref('gameObjects')
+        .param().ref('idFactory');
 
     di.register('ship')
         .as(new require('../Client/Ship').Ship)
         .withConstructor()
         .param().ref('physics')
-        .param().ref('missileFactory');
+        .param().ref('missileFactory')
+        .param().ref('idFactory');
 
     di.register('shipFactory')
         .as(new require('../Client/ShipFactory').ShipFactory)

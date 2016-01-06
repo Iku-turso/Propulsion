@@ -4,13 +4,17 @@ describe('Ship', function() {
     var ship;
     var physicsSpy;
     var missileFactorySpy;
-    var serverSpy;
 
     beforeEach(function() {
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['applyForwardForce', 'applyAngularForce']);
+
         missileFactorySpy = jasmine.createSpyObj('missileFactorySpy', ['create']);
-        serverSpy = jasmine.createSpyObj('serverSpy', ['boost', 'shoot']);
-        ship = new Ship(physicsSpy, missileFactorySpy, serverSpy);
+
+        var idFactoryMock = { create: function() {
+                return 111;
+            }
+        };
+        ship = new Ship(physicsSpy, missileFactorySpy, idFactoryMock);
     });
 
     it('should have x-coordinate 0', function() {
@@ -41,14 +45,45 @@ describe('Ship', function() {
         expect(ship.mass).toBe(1000);
     });
 
+    it('should have type "ship"', function() {
+        expect(ship.type).toBe('ship');
+    });
+
     it('should know how to live', function() {
         expect(ship.live).toEqual(jasmine.any(Function));
     });
 
-    it('should create a missile for ship when shooting', function() {
-        ship.shoot();
+    describe('when shooting', function() {
+        var missile;
+        beforeEach(function() {
+            missile = {};
+            missileFactorySpy.create.and.returnValue(missile);
 
-        expect(missileFactorySpy.create).toHaveBeenCalledWith(ship);
+            ship.x = 1;
+            ship.y = 2;
+            ship.xVelocity = 3;
+            ship.yVelocity = 4;
+            ship.direction = 5;
+            ship.shoot();
+        });
+
+        it('should create a missile with id from idFactory', function() {
+            expect(missileFactorySpy.create).toHaveBeenCalledWith(111);
+        });
+
+        it('missile should be where ship is', function() {
+            expect(missile.x).toBe(1);
+            expect(missile.y).toBe(2);
+        });
+
+        it('missile should have ships velocity', function() {
+            expect(missile.xVelocity).toBe(3);
+            expect(missile.yVelocity).toBe(4);
+        });
+
+        it('missile should point where ship points', function() {
+            expect(missile.direction).toBe(5);
+        });
     });
 
     it('should have id', function() {

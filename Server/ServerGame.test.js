@@ -63,6 +63,12 @@
         });
 
         describe('the created ship when ordered so for id 123', function() {
+            it('should shoot', function() {
+                serverGame.shoot(123);
+
+                expect(shipSpy.shoot).toHaveBeenCalled();
+            });
+
             it('should turn left', function() {
                 serverGame.steerLeft(123);
 

@@ -9,6 +9,7 @@
     self.direction = 0;
     self.angularVelocity = 0;
     self.id = Math.random();
+    self.type = 'missile';
     self.live = function() {
         physics.applyForwardForce(self, 0.1);
     };

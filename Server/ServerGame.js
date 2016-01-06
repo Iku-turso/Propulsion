@@ -15,6 +15,11 @@
     self.createShip = function(id) {
         shipFactory.create(id);
     }
+
+    self.shoot = function(id) {
+        gameObjects[id].shoot();
+    }
+
     self.steerLeft = function(id) {
         gameObjects[id].steerLeft();
     }
