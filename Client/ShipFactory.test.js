@@ -12,7 +12,7 @@ describe('ShipFactory when ship is created', function() {
         worldSpy = jasmine.createSpyObj('worldSpy', ['add']);
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['add']);
         locateSpy = jasmine.createSpy('locateSpy').and.returnValue(new Ship());
-        gameObjects = [];
+        gameObjects = {};
         factory = new ShipFactory(worldSpy, physicsSpy, locateSpy, gameObjects);
         ship = factory.create(123);
     });
@@ -33,8 +33,8 @@ describe('ShipFactory when ship is created', function() {
         expect(physicsSpy.add).toHaveBeenCalledWith(ship);
     });
 
-    it('should push ship to gameObjects', function() {
-        expect(gameObjects).toEqual([ship]);
+    it('should add ship to gameObjects with given id', function() {
+        expect(gameObjects[123]).toBe(ship);
     });
 
     it('should create a ship with given id', function() {

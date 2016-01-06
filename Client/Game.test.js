@@ -7,17 +7,22 @@ describe('Game', function() {
     var physicsSpy;
     var game;
     var tickCallback;
-    var gameObjectASpy;
-    var gameObjectBSpy;
+    var gameObjects;
     var serverMessageCallback;
     var serverSpy;
     var onConnectionCallback;
     var idFactorySpy;
 
     beforeEach(function() {
+        gameObjects = {};
         shipSpy = jasmine.createSpyObj('shipSpy', ['shoot', 'startBoost', 'stopBoost', 'steerLeft', 'steerRight', 'stopSteer']);
         shipFactorySpy = jasmine.createSpyObj('shipFactorySpy', ['create']);
-        shipFactorySpy.create.and.returnValue(shipSpy);
+        shipFactorySpy.create.and.callFake(function(id) {
+            // Todo: this is mock of what the real shipFactory does. Could we use the real shipfactory here?
+            shipSpy.id = id;
+            gameObjects[id] = shipSpy;
+            return shipSpy;
+        });
 
         worldSpy = jasmine.createSpyObj('worldSpy', ['init', 'render', 'setCanvas', 'tick']);
         worldSpy.tick.and.callFake(function(callback) {
@@ -25,10 +30,6 @@ describe('Game', function() {
         });
 
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['apply', 'applyForce']);
-
-        gameObjectASpy = jasmine.createSpyObj('gameObjectASpy', ['live']);
-        gameObjectBSpy = jasmine.createSpyObj('gameObjectBSpy', ['live']);
-        var gameObjects = [gameObjectASpy, gameObjectBSpy];
 
         serverSpy = jasmine.createSpyObj('serverSpy', ['message', 'createShip', 'shoot', 'startBoost', 'stopBoost', 'steerLeft', 'steerRight', 'stopSteer']);
         serverSpy.message.and.callFake(function(callback) {
@@ -65,8 +66,15 @@ describe('Game', function() {
                 game.start();
             });
 
-            describe('when tickCallback is called', function() {
+            describe('given there are gameObjects when tickCallback is called', function() {
+                var gameObjectASpy;
+                var gameObjectBSpy;
                 beforeEach(function() {
+                    gameObjectASpy = jasmine.createSpyObj('gameObjectASpy', ['live']);
+                    gameObjectBSpy = jasmine.createSpyObj('gameObjectBSpy', ['live']);
+                    gameObjects[1] = gameObjectASpy;
+                    gameObjects[2] = gameObjectBSpy;
+
                     tickCallback();
                 });
 
@@ -169,6 +177,52 @@ describe('Game', function() {
                     serverMessageCallback({ data: '{"type":"stopSteer","shipId":123}' });
 
                     expect(shipSpy.stopSteer).toHaveBeenCalled();
+                });
+            });
+
+            describe('when server messages to update gameObjects with unknown ship and its data', function() {
+                beforeEach(function() {
+                    // Todo: the id is duplicate.
+                    serverMessageCallback({ data: '{"type":"gameObjects","gameObjects":{"123":{"type":"ship","id":123,"x":111,"y":222,"direction":333}}}' });
+                });
+
+                it('should call shipFactory with the unknown id', function() {
+                    expect(shipFactorySpy.create).toHaveBeenCalledWith(123);
+                });
+
+                it('should set the created ship\'s x to value from server', function() {
+                    expect(shipSpy.x).toBe(111);
+                });
+
+                it('should set the created ship\'s y to value from server', function() {
+                    expect(shipSpy.y).toBe(222);
+                });
+
+                it('should set the created ship\'s direction to value from server', function() {
+                    expect(shipSpy.direction).toBe(333);
+                });
+
+                describe('when server again messages to update gameObjects with previously created ship and its changed data', function() {
+                    beforeEach(function() {
+                        shipFactorySpy.create.calls.reset();
+                        serverMessageCallback({ data: '{"type":"gameObjects","gameObjects":{"123":{"type":"ship","id":123,"x":1,"y":2,"direction":3}}}' });
+                    });
+
+                    it('should not call shipFactory', function() {
+                        expect(shipFactorySpy.create).not.toHaveBeenCalled();
+                    });
+
+                    it('should set the old ship\'s x to value from server', function() {
+                        expect(shipSpy.x).toBe(1);
+                    });
+
+                    it('should set the old ship\'s y to value from server', function() {
+                        expect(shipSpy.y).toBe(2);
+                    });
+
+                    it('should set the old ship\'s direction to value from server', function() {
+                        expect(shipSpy.direction).toBe(3);
+                    });
                 });
             });
         });

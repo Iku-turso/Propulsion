@@ -48,12 +48,22 @@
             if (message.type === 'stopSteer') {
                 ships[message.shipId].stopSteer();
             }
+
+            if (message.type === 'gameObjects') {
+                Object.keys(message.gameObjects).forEach(function(stringId) {
+                    var id = parseFloat(stringId);
+                    var gameObject = message.gameObjects[id];
+                    var ship = gameObjects[id] || shipFactory.create(id);
+                    ship.x = gameObject.x;
+                    ship.y = gameObject.y;
+                    ship.direction = gameObject.direction;
+                });
+            }
         });
 
         world.tick(function() {
-            // Todo: should gameObjects be an array or a class?
-            gameObjects.forEach(function(go) {
-                go.live();
+            Object.keys(gameObjects).forEach(function(id) {
+                gameObjects[id].live();
             });
 
             physics.apply();

@@ -3,7 +3,7 @@
     
     di.register('locate').instance(di.resolve);
 
-    di.register('gameObjects').instance([]);
+    di.register('gameObjects').instance({});
 
     di.register('physics')
         // Todo: moved stuff shared between Client/Server to eg. "Shared"-folder.

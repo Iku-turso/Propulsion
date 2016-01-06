@@ -9,16 +9,16 @@
         client2Spy = jasmine.createSpyObj('client2Spy', ['send']);
         webSocketMock = { clients: [ client1Spy, client2Spy ]};
 
-        gameObjects = [];
+        gameObjects = {};
 
         var Broadcaster = require('./Broadcaster').Broadcaster;
         broadcaster = new Broadcaster(webSocketMock, gameObjects);
     });
 
-    it('broadcast should send gameState to all clients', function() {
+    it('broadcast should send gameObjects to all clients', function() {
         broadcaster.broadcast();
 
-        var expectedBroadcast = '{"type":"gameObjects","gameObjects":[]}';
+        var expectedBroadcast = '{"type":"gameObjects","gameObjects":{}}';
         expect(client1Spy.send).toHaveBeenCalledWith(expectedBroadcast);
         expect(client2Spy.send).toHaveBeenCalledWith(expectedBroadcast);
     });

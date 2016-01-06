@@ -3,8 +3,8 @@
 
     // Todo: This is logic in constructor.
     tick(function() {
-        gameObjects.forEach(function(gameObject) {
-            gameObject.live();
+        Object.keys(gameObjects).forEach(function(id) {
+            gameObjects[id].live();
         });
 
         physics.apply();

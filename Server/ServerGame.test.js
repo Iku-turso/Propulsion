@@ -18,7 +18,7 @@
 
         gameObjectASpy = jasmine.createSpyObj('gameObjectASpy', ['live']);
         gameObjectBSpy = jasmine.createSpyObj('gameObjectBSpy', ['live']);
-        gameObjects = [gameObjectASpy, gameObjectBSpy];
+        gameObjects = { 1: gameObjectASpy, 2: gameObjectBSpy };
 
         broadcasterSpy = jasmine.createSpyObj('broadcasterSpy', ['broadcast']);
 

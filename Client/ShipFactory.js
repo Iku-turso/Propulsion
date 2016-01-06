@@ -4,7 +4,8 @@
         var ship = locate('ship');
         world.add(ship);
         physics.add(ship);
-        gameObjects.push(ship);
+        gameObjects[id] = ship;
+        // Todo: Is this needed anywhere?
         ship.id = id;
         return ship;
     };

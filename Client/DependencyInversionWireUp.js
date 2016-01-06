@@ -6,7 +6,7 @@ di.register('window').instance(window);
 
 di.register('wait').instance(requestAnimationFrame);
 
-di.register('gameObjects').instance([]);
+di.register('gameObjects').instance({});
 
 di.register('physics')
     .as(SimplePhysics)
