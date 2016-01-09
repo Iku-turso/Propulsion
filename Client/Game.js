@@ -86,27 +86,28 @@
         });
     };
     self.remoteShoot = function() {
-        server.shoot(localShipId);
-        localShip.shoot();
+        var missileId = idFactory.create();
+        localShip.shoot(missileId);
+        server.shoot(localShipId, missileId);
     };
     self.remoteStartBoost = function() {
-        server.startBoost(localShipId);
         localShip.startBoost();
+        server.startBoost(localShipId);
     };
     self.remoteStopBoost = function() {
-        server.stopBoost(localShipId);
         localShip.stopBoost();
+        server.stopBoost(localShipId);
     };
     self.remoteSteerLeft = function() {
-        server.steerLeft(localShipId);
         localShip.steerLeft();
+        server.steerLeft(localShipId);
     };
     self.remoteSteerRight = function() {
-        server.steerRight(localShipId);
         localShip.steerRight();
+        server.steerRight(localShipId);
     };
     self.remoteStopSteer = function() {
-        server.stopSteer(localShipId);
         localShip.stopSteer();
+        server.stopSteer(localShipId);
     };
 }

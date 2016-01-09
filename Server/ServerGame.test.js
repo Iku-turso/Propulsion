@@ -75,11 +75,11 @@
             expect(shipFactorySpy.create).toHaveBeenCalledWith(123);
         });
 
-        describe('the created ship when ordered so for id 123', function() {
+        describe('the created ship when ordered so for shipId 123, and missileId 111', function() {
             it('should shoot', function() {
-                serverGame.shoot(123);
+                serverGame.shoot(123, 111);
 
-                expect(shipSpy.shoot).toHaveBeenCalled();
+                expect(shipSpy.shoot).toHaveBeenCalledWith(111);
             });
 
             it('should turn left', function() {

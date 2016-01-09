@@ -25,7 +25,7 @@ app.ws('/', function(ws, req) {
         }
 
         if (message.type === 'shoot') {
-            game.shoot(message.shipId);
+            game.shoot(message.shipId, message.missileId);
         }
 
         if (message.type === 'steerLeft') {

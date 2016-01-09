@@ -118,11 +118,12 @@ describe('Game', function() {
                     });
 
                     describe('the player\'s ship', function() {
-                        it('should shoot locally and remotely', function() {
+                        it('should shoot locally and remotely with a unique id for the missile', function() {
+                            idFactorySpy.create.and.returnValue(222);
                             game.remoteShoot();
 
-                            expect(shipSpy.shoot).toHaveBeenCalled();
-                            expect(serverSpy.shoot).toHaveBeenCalledWith(111);
+                            expect(shipSpy.shoot).toHaveBeenCalledWith(222);
+                            expect(serverSpy.shoot).toHaveBeenCalledWith(111, 222);
                         });
 
                         it('should boost locally and remotely', function() {

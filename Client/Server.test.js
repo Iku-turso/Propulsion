@@ -38,9 +38,9 @@ describe('Server', function() {
     });
 
     it('shoot should send a message for ship through socket', function() {
-        server.shoot(123);
+        server.shoot(123, 111);
 
-        expect(socketSpy.send).toHaveBeenCalledWith(JSON.stringify({ type: 'shoot', shipId: 123 }));
+        expect(socketSpy.send).toHaveBeenCalledWith(JSON.stringify({ type: 'shoot', shipId: 123, missileId: 111 }));
     });
 
     it('startBoost should send a message for ship through socket', function() {

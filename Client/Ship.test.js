@@ -53,7 +53,7 @@ describe('Ship', function() {
         expect(ship.live).toEqual(jasmine.any(Function));
     });
 
-    describe('when shooting', function() {
+    describe('when shooting with missileId 123', function() {
         var missile;
         beforeEach(function() {
             missile = {};
@@ -64,11 +64,11 @@ describe('Ship', function() {
             ship.xVelocity = 3;
             ship.yVelocity = 4;
             ship.direction = 5;
-            ship.shoot();
+            ship.shoot(123);
         });
 
-        it('should create a missile with id from idFactory', function() {
-            expect(missileFactorySpy.create).toHaveBeenCalledWith(111);
+        it('should call missileFactory with id 123', function() {
+            expect(missileFactorySpy.create).toHaveBeenCalledWith(123);
         });
 
         it('missile should be where ship is', function() {

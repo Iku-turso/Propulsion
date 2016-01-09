@@ -1,4 +1,5 @@
-﻿Server = function(socket) {
+﻿// Todo: rename to eg. "Sender".
+Server = function(socket) {
     var self = this;
     self.message = function(callback) {
         socket.onmessage = callback;
@@ -9,6 +10,7 @@
     }
 
     var send = function(messageType, shipId) {
+        // Todo: abstract stringify for easier testing.
         socket.send(JSON.stringify({ type: messageType, shipId: shipId }));
     }
     
@@ -16,8 +18,8 @@
         send('createShip', id);
     }
 
-    self.shoot = function(id) {
-        send('shoot', id);
+    self.shoot = function(shipId, missileId) {
+        socket.send(JSON.stringify({ type: 'shoot', shipId: shipId, missileId: missileId }));
     }
 
     self.startBoost = function(id) {
