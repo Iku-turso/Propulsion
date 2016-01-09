@@ -74,7 +74,8 @@ di.register('ship')
     .as(Ship)
     .withConstructor()
     .param().ref('physics')
-    .param().ref('missileFactory');
+    .param().ref('missileFactory')
+    .param().ref('idFactory');
 
 di.register('shipFactory')
     .as(ShipFactory)

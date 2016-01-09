@@ -20,7 +20,7 @@ describe('Game', function() {
         shipSpy = jasmine.createSpyObj('shipSpy', ['shoot', 'startBoost', 'stopBoost', 'steerLeft', 'steerRight', 'stopSteer']);
         shipFactorySpy = jasmine.createSpyObj('shipFactorySpy', ['create']);
         shipFactorySpy.create.and.callFake(function(id) {
-            // Todo: this is mock of what the real shipFactory does. Could we use the real shipfactory here?
+            // Todo: this is mock of what the real shipFactory does. Could we use the real shipFactory here?
             shipSpy.id = id;
             gameObjects[id] = shipSpy;
             return shipSpy;
@@ -99,52 +99,71 @@ describe('Game', function() {
                 });
             });
 
-            it('should tell server to shoot with id unique to player when remoteShoot is called ', function() {
-                game.remoteShoot();
-
-                expect(serverSpy.shoot).toHaveBeenCalledWith(111);
-            });
-
-            it('should tell server to boost with id unique to player when remoteBoost is called ', function() {
-                game.remoteStartBoost();
-
-                expect(serverSpy.startBoost).toHaveBeenCalledWith(111);
-            });
-
-            it('should tell server to stop boost with id unique to player when remoteBoost is called ', function() {
-                game.remoteStopBoost();
-
-                expect(serverSpy.stopBoost).toHaveBeenCalledWith(111);
-            });
-
-            it('should tell server to steer left with id unique to player when remoteSteerLeft is called ', function() {
-                game.remoteSteerLeft();
-
-                expect(serverSpy.steerLeft).toHaveBeenCalledWith(111);
-            });
-
-            it('should tell server to steer right with id unique to player when remoteSteerRight is called ', function() {
-                game.remoteSteerRight();
-
-                expect(serverSpy.steerRight).toHaveBeenCalledWith(111);
-            });
-
-            it('should tell server to stop steering with id unique to player when remoteStopSteer is called ', function() {
-                game.remoteStopSteer();
-
-                expect(serverSpy.stopSteer).toHaveBeenCalledWith(111);
-            });
-
             describe('when connection to server is established', function() {
                 beforeEach(function() {
                     onConnectionCallback();
                 });
 
-                it('should tell server to create a ship with id unique to player', function() {
+                it('should tell server to create a ship with id unique to player 111', function() {
                     expect(serverSpy.createShip).toHaveBeenCalledWith(111);
+                });
+
+                describe('when server messages to update gameObjects containing ship with the same id 111', function() {
+                    beforeEach(function() {
+                        serverMessageCallback({ data: '{"type":"gameObjects","gameObjects":{"111":{"type":"ship","id":111,"x":111,"y":222,"direction":333}}}' });
+                    });
+
+                    it('should create the player\'s ship with id 111', function() {
+                        expect(shipFactorySpy.create).toHaveBeenCalledWith(111);
+                    });
+
+                    describe('the player\'s ship', function() {
+                        it('should shoot locally and remotely', function() {
+                            game.remoteShoot();
+
+                            expect(shipSpy.shoot).toHaveBeenCalled();
+                            expect(serverSpy.shoot).toHaveBeenCalledWith(111);
+                        });
+
+                        it('should boost locally and remotely', function() {
+                            game.remoteStartBoost();
+
+                            expect(shipSpy.startBoost).toHaveBeenCalled();
+                            expect(serverSpy.startBoost).toHaveBeenCalledWith(111);
+                        });
+
+                        it('should stop boost locally and remotely ', function() {
+                            game.remoteStopBoost();
+
+                            expect(shipSpy.stopBoost).toHaveBeenCalled();
+                            expect(serverSpy.stopBoost).toHaveBeenCalledWith(111);
+                        });
+                        
+                        it('should steer left locally and remotely ', function() {
+                            game.remoteSteerLeft();
+
+                            expect(shipSpy.steerLeft).toHaveBeenCalled();
+                            expect(serverSpy.steerLeft).toHaveBeenCalledWith(111);
+                        });
+
+                        it('should steer right locally and remotely ', function() {
+                            game.remoteSteerRight();
+
+                            expect(shipSpy.steerRight).toHaveBeenCalled();
+                            expect(serverSpy.steerRight).toHaveBeenCalledWith(111);
+                        });
+
+                        it('should stop steering locally and remotely ', function() {
+                            game.remoteStopSteer();
+
+                            expect(shipSpy.stopSteer).toHaveBeenCalled();
+                            expect(serverSpy.stopSteer).toHaveBeenCalledWith(111);
+                        });
+                    });
                 });
             });
 
+            // Todo: do we need all these features below, or are they covered by updating gameObjects?
             describe('when server messages to create a ship with id 123', function() {
                 beforeEach(function() {
                     serverMessageCallback({ data: '{"type":"createShip","shipId":123}' });

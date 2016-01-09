@@ -11,10 +11,11 @@
         world.setCanvas();
     };
 
-    var shipId = idFactory.create();
+    var localShipId = idFactory.create();
+    var localShip;
     self.start = function() {
         server.onConnect(function() {
-            server.createShip(shipId);
+            server.createShip(localShipId);
         });
 
         var ships = {};
@@ -50,6 +51,7 @@
             }
 
             if (message.type === 'gameObjects') {
+                // Todo: move to own class.
                 Object.keys(message.gameObjects).forEach(function(stringId) {
                     var messageGameObject = message.gameObjects[stringId];
                     var id = parseFloat(stringId);
@@ -58,6 +60,9 @@
                     if (!gameObject) {
                         if (messageGameObject.type === 'ship') {
                             gameObject = shipFactory.create(id);
+                            if (id === localShipId) {
+                                localShip = gameObject;
+                            }
                         }
                         
                         if (messageGameObject.type === 'missile') {
@@ -81,21 +86,27 @@
         });
     };
     self.remoteShoot = function() {
-        server.shoot(shipId);
+        server.shoot(localShipId);
+        localShip.shoot();
     };
     self.remoteStartBoost = function() {
-        server.startBoost(shipId);
+        server.startBoost(localShipId);
+        localShip.startBoost();
     };
     self.remoteStopBoost = function() {
-        server.stopBoost(shipId);
+        server.stopBoost(localShipId);
+        localShip.stopBoost();
     };
     self.remoteSteerLeft = function() {
-        server.steerLeft(shipId);
+        server.steerLeft(localShipId);
+        localShip.steerLeft();
     };
     self.remoteSteerRight = function() {
-        server.steerRight(shipId);
+        server.steerRight(localShipId);
+        localShip.steerRight();
     };
     self.remoteStopSteer = function() {
-        server.stopSteer(shipId);
+        server.stopSteer(localShipId);
+        localShip.stopSteer();
     };
 }

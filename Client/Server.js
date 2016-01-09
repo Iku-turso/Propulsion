@@ -8,31 +8,35 @@
         socket.onopen = callback;
     }
 
+    var send = function(messageType, shipId) {
+        socket.send(JSON.stringify({ type: messageType, shipId: shipId }));
+    }
+    
     self.createShip = function(id) {
-        socket.send(JSON.stringify({ type: 'createShip', shipId: id }));
+        send('createShip', id);
     }
 
     self.shoot = function(id) {
-        socket.send(JSON.stringify({ type: 'shoot', shipId: id }));
+        send('shoot', id);
     }
 
     self.startBoost = function(id) {
-        socket.send(JSON.stringify({ type: 'startBoost', shipId: id }));
+        send('startBoost', id);
     }
 
     self.stopBoost = function(id) {
-        socket.send(JSON.stringify({ type: 'stopBoost', shipId: id }));
+        send('stopBoost', id);
     }
 
     self.steerLeft = function(id) {
-        socket.send(JSON.stringify({ type: 'steerLeft', shipId: id }));
+        send('steerLeft', id);
     }
 
     self.steerRight = function(id) {
-        socket.send(JSON.stringify({ type: 'steerRight', shipId: id }));
+        send('steerRight', id);
     }
 
     self.stopSteer = function(id) {
-        socket.send(JSON.stringify({ type: 'stopSteer', shipId: id }));
+        send('stopSteer', id);
     }
 };
