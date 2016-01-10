@@ -111,3 +111,4 @@
         server.stopSteer(localShipId);
     };
 }
+exports.Game = Game;

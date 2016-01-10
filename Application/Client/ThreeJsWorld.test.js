@@ -1,8 +1,4 @@
-﻿/// <reference path="ThreeJsWorld.js" />
-/// <reference path="Ship.js" />
-/// <reference path="Missile.js" />
-/// <reference path="../Scripts/three.js" />
-describe('ThreeJsWorld', function() {
+﻿describe('ThreeJsWorld', function() {
     var sceneSpy;
     var rendererSpy;
     var cameraSpy;
@@ -11,6 +7,9 @@ describe('ThreeJsWorld', function() {
     var window;
     var waitSpy;
     var mesh;
+    var ThreeJsWorld = require('./ThreeJsWorld').ThreeJsWorld;
+    var Missile = require('./Missile').Missile;
+    var THREE = require('three');
 
     beforeEach(function() {
         sceneSpy = jasmine.createSpyObj('sceneSpy', ['add', 'addedMissile']);

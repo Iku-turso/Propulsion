@@ -1,4 +1,4 @@
-﻿require('./Server/ServerDependencyInversionWireUp').init();
+﻿require('./Application/Server/ServerDependencyInversionWireUp').init();
 var di = require('di4js');
 
 // Todo: this is bit of a mess.
@@ -10,8 +10,9 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/Index.html');
 });
 
-app.use('/Client', express.static('Client'));
-app.use('/Scripts', express.static('Scripts'));
+app.get('/Bundle', function(req, res) {
+    res.sendFile(__dirname + '/Bundle.js');
+});
 
 var game = di.resolve('serverGame');
 

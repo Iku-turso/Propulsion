@@ -1,6 +1,4 @@
-﻿/// <reference path="Game.js" />
-
-describe('Game', function() {
+﻿describe('Game', function() {
     var shipFactorySpy;
     var shipSpy;
     var worldSpy;
@@ -14,6 +12,7 @@ describe('Game', function() {
     var idFactorySpy;
     var missileMock;
     var missileFactorySpy;
+    var Game = require('./Game').Game;
 
     beforeEach(function() {
         gameObjects = {};

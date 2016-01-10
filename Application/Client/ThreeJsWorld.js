@@ -1,5 +1,6 @@
 ﻿ThreeJsWorld = function(scene, renderer, camera, container, window, wait) {
     var self = this;
+    var THREE = require('three');
     var ship;
 
     self.init = function() {
@@ -70,3 +71,4 @@
         animate();
     };
 }
+exports.ThreeJsWorld = ThreeJsWorld;

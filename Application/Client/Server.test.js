@@ -1,8 +1,7 @@
-﻿/// <reference path="Server.js" />
-
-describe('Server', function() {
+﻿describe('Server', function() {
     var server;
     var socketSpy;
+    var Server = require('./Server').Server;
     beforeEach(function() {
         socketSpy = jasmine.createSpyObj('socketSpy', ['send']);
         server = new Server(socketSpy);

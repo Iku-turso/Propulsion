@@ -42,3 +42,4 @@ Server = function(socket) {
         send('stopSteer', id);
     }
 };
+exports.Server = Server;

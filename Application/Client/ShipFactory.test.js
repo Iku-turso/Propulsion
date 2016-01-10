@@ -1,13 +1,11 @@
-﻿/// <reference path="Ship.js" />
-/// <reference path="ShipFactory.js" />
-
-describe('ShipFactory when ship is created', function() {
+﻿describe('ShipFactory when ship is created', function() {
     var factory;
     var ship;
     var worldSpy;
     var physicsSpy;
     var locateSpy;
     var gameObjects;
+    var ShipFactory = require('./ShipFactory').ShipFactory;
     beforeEach(function() {
         worldSpy = jasmine.createSpyObj('worldSpy', ['add']);
         physicsSpy = jasmine.createSpyObj('physicsSpy', ['add']);

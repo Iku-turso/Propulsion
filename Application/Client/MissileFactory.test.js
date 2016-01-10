@@ -1,13 +1,11 @@
-﻿/// <reference path="Missile.js" />
-/// <reference path="MissileFactory.js" />
-
-describe('when MissileFactory creates a missile for a ship in origo, pointing right', function() {
+﻿describe('when MissileFactory creates a missile for a ship in origo, pointing right', function() {
     var factory;
     var missile;
     var worldSpy;
     var physicsSpy;
     var locateSpy;
     var gameObjects;
+    var MissileFactory = require('./MissileFactory').MissileFactory;
     beforeEach(function() {
         worldSpy = new jasmine.createSpyObj('worldSpy', ['add']);
         physicsSpy = new jasmine.createSpyObj('physicsSpy', ['add']);

@@ -1,8 +1,7 @@
-﻿/// <reference path="SimplePhysics.js" />
-/// <reference path="Ship.js" />
-/// <reference path="Missile.js" />
-describe('SimplePhysics when ship is added', function() {
+﻿describe('SimplePhysics when ship is added', function() {
+    var SimplePhysics = require('./SimplePhysics').SimplePhysics;
     var physics;
+    var Ship = require('./Ship').Ship;
     var ship;
     beforeEach(function() {
         physics = new SimplePhysics();

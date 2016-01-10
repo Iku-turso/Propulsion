@@ -1,5 +1,5 @@
 {
-  "spec_dir": "Server",
+  "spec_dir": "Application",
   "spec_files": [
     "**/*[tT]est.js"
   ],
